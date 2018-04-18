@@ -1,0 +1,25 @@
+.Navigation {
+    background-color: #334;
+    color: white;       
+    display: flex;
+    flex-direction: row;
+    font-size: 1.2rem;
+    height: 75px;
+    padding: 20px;
+
+}
+.logo:hover {
+    cursor: pointer;
+}
+
+.Navigation ul { 
+    display: flex;
+    list-style: none;    
+     
+}
+.Navigation li {
+    margin-right: 20px;
+}
+.Navigation a {
+    color: white;
+}

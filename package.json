@@ -1,0 +1,25 @@
+{
+  "name": "VenSpace",
+  "version": "1.0.0",
+  "description": "Never Miss An Opportunity",
+  "main": "server.js",
+  "scripts": {
+    "client-install": "cd client && npm install",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "Edwin Martinez",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "axios": "^0.18.0",
+    "concurrently": "^3.5.1",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "mongoose": "^5.0.12",
+    "nodemon": "^1.14.7",
+    "react-router-dom": "^4.2.2"
+  }
+}
