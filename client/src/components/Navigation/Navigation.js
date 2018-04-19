@@ -8,11 +8,11 @@ class Navigation extends Component {
         return (
             <nav className={classes.Navigation}>
                 <span className={classes.logo}>
-                    VenSpace
+                    <NavLink to="/">VenSpace</NavLink>
                 </span>
                 <ul>
                     <li><NavLink to='/register'>Register</NavLink></li>
-                    <li><NavLink to='/login'>Login</NavLink></li>
+                    <li><NavLink to='/signin'>Signin</NavLink></li>
                 </ul>
             </nav>
         )
