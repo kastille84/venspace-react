@@ -1,14 +1,15 @@
-
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index';
 import MapWithASearchBox from '../../Map/MapWithASearchBox';
+import classes from './Home.css';
 
 
 class Home extends Component {
     state = {
-        ipWasSet: false
+        ipWasSet: false,
+        showMap: true
     }
     componentWillMount() {
         axios.get('http://ip-api.com/json')
@@ -27,12 +28,21 @@ class Home extends Component {
             console.log(err);
         })
     }
+    showMapToggle = () => {
+        this.setState({showMap: !this.state.showMap});
+    }
 
     render() {
         return (
-            <div>
+            <div className={classes.Home}>
+                <div className={classes.MapContainer}>
+                    <span className={classes.BtnControls}>
+                        <button onClick={this.showMapToggle}>{this.state.showMap? 'Hide': 'View'} Map</button>
+                    </span>
+                    {this.state.ipWasSet && this.state.showMap? <MapWithASearchBox /> : null}
+                </div>
                 <div>
-                    {this.state.ipWasSet? <MapWithASearchBox /> : null}
+                    <h3>Flyer List Component Goes Here</h3>
                 </div>
             </div>
         )

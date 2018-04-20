@@ -1,0 +1,13 @@
+.Home {
+
+}
+
+.MapContainer {   
+    margin: 20px auto;
+    width: 80%;
+}
+
+.BtnControls {
+    display: inline-block;
+    margin-bottom: 20px;
+}

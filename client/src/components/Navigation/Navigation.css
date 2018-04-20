@@ -5,6 +5,7 @@
     flex-direction: row;
     font-size: 1.2rem;
     height: 75px;
+    margin-bottom: 70px;
     padding: 20px;
 
 }
@@ -15,7 +16,7 @@
 .Navigation ul { 
     display: flex;
     list-style: none;    
-     
+
 }
 .Navigation li {
     margin-right: 20px;

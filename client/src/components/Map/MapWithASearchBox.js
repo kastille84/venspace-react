@@ -89,7 +89,7 @@ const MapWithASearchBox = compose(
           boxSizing: `border-box`,
           border: `1px solid transparent`,
           width: `340px`,
-          height: `42px`,
+          height: `50px`,
           marginTop: `27px`,
           padding: `0 12px`,
           borderRadius: `3px`,
