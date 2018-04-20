@@ -1,1 +1,1 @@
-export const SET_ZIP = 'SET_ZIP';
+export const SET_IP_LOCATION = 'SET_IP_LOCATION';

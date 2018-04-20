@@ -1,8 +1,8 @@
 import * as actionTypes from './actionTypes';
 
-export const setZip = (zip) => {
+export const setIpLocation = (ipLocation) => {
     return {
-        type: actionTypes.SET_ZIP,
-        zip: zip
+        type: actionTypes.SET_IP_LOCATION,
+        ipLocation: ipLocation
     }
 }

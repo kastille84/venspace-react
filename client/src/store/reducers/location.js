@@ -1,19 +1,19 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    zip: null
+    ipLocation: null
 }
 
 const reducer = (state = initialState, action) => {
     //let cState = {...state};
     switch(action.type) {
-        case actionTypes.SET_ZIP:
+        case actionTypes.SET_IP_LOCATION:
             return {
                 ...state,
-                zip: action.zip
+                ipLocation: action.ipLocation
             };
         default:
-            return state
+            return state;
     }
 }
 

@@ -4,5 +4,5 @@ export {
 
 
 export {
-    setZip
+    setIpLocation
 } from './location';

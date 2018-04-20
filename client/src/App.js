@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import {Route} from 'react-router-dom';
-import { connect } from 'react-redux';
 //import logo from './logo.svg';
 import classes from  './App.css';
-import axios from 'axios';
-import * as actions from './store/actions/index';
+
 
 import Navigation from './components/Navigation/Navigation';
 import Home from './components/Frontend/Home/Home';
@@ -13,18 +11,7 @@ import Signin from './components/Frontend/Signin/Signin';
 
 
 class App extends Component {
-  //Get Location Initially
-  componentWillMount() {
-    axios.get('http://ip-api.com/json')
-      .then(response => {
-        console.log(response);
-        //set zip
-        this.props.onSetZip(response.data.zip);
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  }
+
 
   render() {
     return (
@@ -38,10 +25,6 @@ class App extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onSetZip: (zip) => dispatch(actions.setZip(zip))
-  }
-}
 
-export default connect(null, mapDispatchToProps)(App);
+
+export default App;
