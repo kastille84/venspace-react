@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import classes from './Register.css';
 import InfoMessage from '../../UI/Message/InfoMessage';
+import axios from 'axios';
 
 class Register extends Component {
 	state = {
@@ -42,7 +43,6 @@ class Register extends Component {
 	checkValidity = (control, value) => {
 		let errorMessage = [];
         let controlName = (control !== 'password_retry')? control: 'password';
-        console.log(controlName);
 		// check all if empty
 		if (value.trim() === '') {					
 			errorMessage.push(`${controlName.toUpperCase()} must not be empty`);
@@ -52,12 +52,12 @@ class Register extends Component {
             case 'name':
 				// check max length of 80
 				if (value.length > 80) {
-					errorMessage.push(`${controlName.toUpperCase()} must not be more than 80 characters`);
+					errorMessage.push(`${control.toUpperCase()} must not be more than 80 characters`);
                 }
 				return errorMessage;
 			case 'email':
 				if (value.trim().length > 100) {
-					errorMessage.push(`${controlName.toUpperCase()} must not be more than 100 characters`);
+					errorMessage.push(`${control.toUpperCase()} must not be more than 100 characters`);
 				}
 				// check is email
                 if (!value.trim().match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)) {
@@ -67,11 +67,11 @@ class Register extends Component {
 			case 'password':
                 // check is maxlength 20 chars
                 if (value.trim().length > 20) {
-					errorMessage.push(`${controlName.toUpperCase()} must not be more than 20 characters`);
+					errorMessage.push(`${control.toUpperCase()} must not be more than 20 characters`);
                 }
                 // check is minlength 6 chars
                 if (value.trim().length < 6) {
-					errorMessage.push(`${controlName.toUpperCase()} must be more than 6 characters`);
+					errorMessage.push(`${control.toUpperCase()} must be more than 6 characters`);
                 }
                 return errorMessage;
 			case 'password_retry':
@@ -111,7 +111,30 @@ class Register extends Component {
      }
 	
 	handleSubmit = (e) => {
-		
+        e.preventDefault();
+        let isValid = true;
+        // create data to send to server
+            // && check whole form validity
+        const data = {};
+        for(let ctr in this.state.controls) {
+            data[ctr] = this.state.controls[ctr].value;
+            if (this.state.controls[ctr].validation.length > 0) {
+                // then it didn't pass validation
+                isValid = false;
+            }
+        }
+        // if isValid stays true 
+        if (isValid) {
+            // make axios call
+            axios.post('/register', data)
+                .then(response => {
+
+                })
+                .catch(e => {
+
+                })
+        }
+
     }
 
     render() {

@@ -12,7 +12,10 @@ class Home extends Component {
         showMap: true
     }
     componentWillMount() {
-        axios.get('http://ip-api.com/json')
+        //axios.get('http://ip-api.com/json')
+        axios({
+            method: 'get',
+            url: 'http://ip-api.com/json'})
         .then(response => {
             console.log(response);
             

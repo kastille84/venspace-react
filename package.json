@@ -15,11 +15,16 @@
   "devDependencies": {},
   "dependencies": {
     "axios": "^0.18.0",
+    "bcrypt": "^2.0.1",
     "concurrently": "^3.5.1",
     "cors": "^2.8.4",
     "express": "^4.16.2",
+    "express-validator": "^5.1.2",
+    "jsonwebtoken": "^8.2.1",
     "mongoose": "^5.0.12",
+    "nodemailer": "^4.6.4",
     "nodemon": "^1.14.7",
+    "random-string": "^0.2.0",
     "react-router-dom": "^4.2.2"
   }
 }
