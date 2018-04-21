@@ -41,6 +41,20 @@ router.post('/register', [
     ], (req, res) => {;
         checkInputs(req, res);    
         console.log('register', req.body)
+        const salt = bcrypt.genSaltSync(10);
+        const hashPass = bcrypt.hashSync( (req.body.password).toLowerCase(), salt);
+
+        const user = new User({
+            name: req.body.name,
+            email: req.body.email.toLowerCase(),
+            password: hashPass
+        })
+        
+        user.save( (err, result) => {
+            if (err) return res.status(500).json({message: err})
+            
+            return res.status(200).json({message: 'success'});
+        });
 })
 
 // router.get('/users', (req, res) => {
