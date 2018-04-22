@@ -131,7 +131,7 @@ class Register extends Component {
             axios.post('/register', data)
                 .then(response => {
                     // set Register on Redux
-                    this.props.onSetRegistered();
+                    this.props.onSetRegistered(true);
                     // redirect them to login
                     this.props.history.push('/signin');
                 })
@@ -148,7 +148,7 @@ class Register extends Component {
         return (
             <div className={classes.Register}>                
                 <h2>Register to VenSpace</h2>
-                <p><small>Already registered? <Link to="/signin">signin</Link></small></p>
+                <p><small>Already registered? <Link to="/signin">Signin</Link></small></p>
                 <section>
                     {errorDisplay}
                     <form onSubmit={this.handleSubmit}>
@@ -202,9 +202,9 @@ class Register extends Component {
     }
 }
 
-const mapDispatchToProps= (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        onSetRegistered: () => dispatch(actions.setRegistered())
+        onSetRegistered: (bool) => dispatch(actions.setRegistered(bool))
     }
 }
 

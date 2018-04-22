@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     user: null,
-    registered: false
+    registered: false,
+    signedIn: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -11,7 +12,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SET_REGISTERED:
             return {
                 ...state,
-                registered: true
+                registered: action.bool
             }
         default: 
             return state;
