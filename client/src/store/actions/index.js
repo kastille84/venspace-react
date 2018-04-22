@@ -1,5 +1,5 @@
 export {
-
+    setRegistered
 } from './user';
 
 

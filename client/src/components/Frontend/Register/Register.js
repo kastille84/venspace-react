@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classes from './Register.css';
 import InfoMessage from '../../UI/Message/InfoMessage';
 import axios from 'axios';
+import * as actions from '../../../store/actions/index';
 
 class Register extends Component {
 	state = {
@@ -128,7 +130,10 @@ class Register extends Component {
             // make axios call
             axios.post('/register', data)
                 .then(response => {
-
+                    // set Register on Redux
+                    this.props.onSetRegistered();
+                    // redirect them to login
+                    this.props.history.push('/signin');
                 })
                 .catch(e => {
 
@@ -197,4 +202,10 @@ class Register extends Component {
     }
 }
 
-export default Register;
+const mapDispatchToProps= (dispatch) => {
+    return {
+        onSetRegistered: () => dispatch(actions.setRegistered())
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Register);
