@@ -115,7 +115,7 @@ class Signin extends Component {
                     this.props.onSetUser(response.data);
                     this.props.onSetSignin(true);
                     // redirect them to s
-                    //this.props.history.push('/signin');
+                    this.props.history.push('/manage');
                 })
                 .catch(e => {
 
@@ -125,12 +125,18 @@ class Signin extends Component {
 
     render(){
         let errorDisplay= this.errorDisplay();
+        // reqErrors
+        let reqErrorsDisplay = null;
+        if (this.state.reqErrors) {
+            reqErrorsDisplay = <InfoMessage messageType='fail'>Could No Signin. Check Your Input.</InfoMessage>
+        }
         return (
             <div className={classes.Signin}>
                 {this.props.userRedux.registered? <InfoMessage messageType="info">Yay! You've registered! It's time to sign in with your new credentials.</InfoMessage> : null}
                 <h2>Signin to VenSpace</h2>
                 <p><small>Don't have an account? <Link to="/register">Register</Link></small></p>
                 <section>
+                    {reqErrorsDisplay}
                     {errorDisplay}
                     <form onSubmit={this.handleSubmit}>
 						<div className="form-group">

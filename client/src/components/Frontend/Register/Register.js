@@ -144,12 +144,17 @@ class Register extends Component {
 
     render() {
         let errorDisplay = this.errorDisplay();
-
+        // reqErrors
+        let reqErrorsDisplay = null;
+        if (this.state.reqErrors) {
+            reqErrorsDisplay = <InfoMessage messageType='fail'>Could No Register. Check Your Input.</InfoMessage>
+        }
         return (
             <div className={classes.Register}>                
                 <h2>Register to VenSpace</h2>
                 <p><small>Already registered? <Link to="/signin">Signin</Link></small></p>
                 <section>
+                    {reqErrorsDisplay}
                     {errorDisplay}
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-group">
