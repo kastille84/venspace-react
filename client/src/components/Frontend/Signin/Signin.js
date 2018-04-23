@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import InfoMessage from '../../UI/Message/InfoMessage';
 import classes from './Signin.css';
+import * as actions from '../../../store/actions/index';
 
 class Signin extends Component {
     state = {
@@ -109,8 +110,10 @@ class Signin extends Component {
             // make axios call
             axios.post('/signin', data)
                 .then(response => {
+                    //console.log('data', response.data);
                     // set user data on Redux
-
+                    this.props.onSetUser(response.data);
+                    this.props.onSetSignin(true);
                     // redirect them to s
                     //this.props.history.push('/signin');
                 })
@@ -164,4 +167,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Signin);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSetUser: (data) => dispatch(actions.setUser(data)),
+        onSetSignin: (bool) => dispatch(actions.setSignin(bool))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);

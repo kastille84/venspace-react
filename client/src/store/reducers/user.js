@@ -13,7 +13,17 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 registered: action.bool
-            }
+            };
+        case actionTypes.SET_SIGNIN:
+            return {
+                ...state,
+                signedIn: action.bool
+            };
+        case actionTypes.SET_USER:
+            return {
+                ...state,
+                user: action.user
+            };
         default: 
             return state;
     }

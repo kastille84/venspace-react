@@ -1,5 +1,7 @@
 export {
-    setRegistered
+    setRegistered,
+    setSignin,
+    setUser
 } from './user';
 
 

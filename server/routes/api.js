@@ -40,7 +40,6 @@ router.post('/register', [
             .exists()
     ], (req, res) => {;
         checkInputs(req, res);    
-        console.log('register', req.body)
         const salt = bcrypt.genSaltSync(10);
         const hashPass = bcrypt.hashSync( (req.body.password).toLowerCase(), salt);
 
@@ -49,13 +48,48 @@ router.post('/register', [
             email: req.body.email.toLowerCase(),
             password: hashPass
         })
-        
+
         user.save( (err, result) => {
             if (err) return res.status(500).json({message: err})
             
             return res.status(200).json({message: 'success'});
         });
 })
+
+// Signin
+router.post('/signin', [
+        check('email')
+            .isEmail()
+            .matches(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
+            .escape()
+            .trim()
+            .exists(),
+        check('password')
+            .escape()
+            .trim()
+            .exists()
+    ], (req, res) => {
+        checkInputs(req, res);
+
+        User.findOne({email: req.body.email}).exec()
+            .then(user => {
+                // compare passwords
+                bcrypt.compare(req.body.password, user.password, (err,same) => {
+                    if (err) {
+                        return res.status(500).json({message: 'could not check password'});
+                    }
+                    if (same) {
+                        return res.status(200).json({user: user});
+                    } else {
+                        return res.status(500).json({message: 'passwords do not match'});
+                    }
+                })
+            })
+            .catch(err => {
+                return res.status(500).json({message: 'could not look up the user'});
+            })
+
+});
 
 // router.get('/users', (req, res) => {
 //     // User.find()
