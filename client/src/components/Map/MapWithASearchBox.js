@@ -10,6 +10,7 @@ import {
 } from "react-google-maps";
 import  SearchBox from "react-google-maps/lib/components/places/SearchBox";
 import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
 
 const MapWithASearchBox = compose(
   withProps({
@@ -44,6 +45,9 @@ const MapWithASearchBox = compose(
         onPlacesChanged: () => {
           const places = refs.searchBox.getPlaces();
           console.log('places', places);
+          // ******* Check Validity of Place
+          checkPlaceValidity(places, this.props);
+
           const bounds = new google.maps.LatLngBounds();
 
           places.forEach(place => {
@@ -63,7 +67,7 @@ const MapWithASearchBox = compose(
             markers: nextMarkers,
           });
           // refs.map.fitBounds(bounds);
-        },
+        },        
       })
     },
   }),
@@ -106,9 +110,30 @@ const MapWithASearchBox = compose(
   </GoogleMap>
 );
 
+const checkPlaceValidity = (places, props) => {
+    let foundStreetNumber = false;
+    for (let c of places[0].address_components) {
+        if (c.types[0] === 'street_number') {
+            foundStreetNumber = true;
+        }
+    }
+
+    if (foundStreetNumber) {
+        // set validPlace on locationRedux ot true
+        props.onSetValidPlace(true);
+    } else {
+        props.onSetValidPlace(false);
+    }
+}
+
 const mapStateToProps = (state) => {
     return {
         locationRedux: state.locationRedux
     }
 }
-export default connect(mapStateToProps)(MapWithASearchBox);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSetValidPlace: (bool) => dispatch(actions.setValidPlace(bool))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(MapWithASearchBox);

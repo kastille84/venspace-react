@@ -6,5 +6,6 @@ export {
 
 
 export {
-    setIpLocation
+    setIpLocation,
+    setValidPlace
 } from './location';

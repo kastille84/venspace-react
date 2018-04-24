@@ -6,3 +6,10 @@ export const setIpLocation = (ipLocation) => {
         ipLocation: ipLocation
     }
 }
+
+export const setValidPlace = (bool) => {
+    return {
+        type: actionTypes.SET_VALID_PLACE,
+        bool: bool
+    }
+}

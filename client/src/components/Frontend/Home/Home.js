@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index';
-import MapWithASearchBox from '../../Map/MapWithASearchBox';
 import classes from './Home.css';
-
+import MapWithASearchBox from '../../Map/MapWithASearchBox';
+import FlyerListWrapper from '../../Flyer/FlyerListWrapper/FlyerListWrapper';
+import InfoMessage from '../../UI/Message/InfoMessage';
 
 class Home extends Component {
     state = {
@@ -42,13 +43,18 @@ class Home extends Component {
                     <span className={classes.BtnControls}>
                         <button onClick={this.showMapToggle}>{this.state.showMap? 'Hide': 'View'} Map</button>
                     </span>
+                    {this.props.locationRedux.validPlace === false? <InfoMessage messageType="fail">Your search is too broad. Please search a business location or address.</InfoMessage>: null}
                     {this.state.ipWasSet && this.state.showMap? <MapWithASearchBox /> : null}
                 </div>
-                <div>
-                    <h3>Flyer List Component Goes Here</h3>
-                </div>
+                <FlyerListWrapper></FlyerListWrapper>
             </div>
         )
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        locationRedux: state.locationRedux
     }
 }
 
@@ -58,4 +64,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

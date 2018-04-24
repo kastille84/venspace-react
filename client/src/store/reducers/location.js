@@ -1,7 +1,9 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    ipLocation: null
+    ipLocation: null,
+    validPlace: null,
+    selectedPlace: null,
 }
 
 const reducer = (state = initialState, action) => {
@@ -12,6 +14,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 ipLocation: action.ipLocation
             };
+        case actionTypes.SET_VALID_PLACE:
+            return {
+                ...state,
+                validPlace: action.bool
+            }
         default:
             return state;
     }

@@ -118,7 +118,7 @@ class Signin extends Component {
                     this.props.history.push('/manage');
                 })
                 .catch(e => {
-
+                    this.setState({reqErrors: 'Wrong Email/Password'})
                 })
         }
     }
@@ -128,7 +128,7 @@ class Signin extends Component {
         // reqErrors
         let reqErrorsDisplay = null;
         if (this.state.reqErrors) {
-            reqErrorsDisplay = <InfoMessage messageType='fail'>Could No Signin. Check Your Input.</InfoMessage>
+            reqErrorsDisplay = <InfoMessage messageType='fail'>{this.state.reqErrors}</InfoMessage>
         }
         return (
             <div className={classes.Signin}>
