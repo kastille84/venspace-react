@@ -1,0 +1,11 @@
+.FlyerMaker {
+
+}
+
+.FlyerMaker section {
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    margin: 20px auto;
+    padding: 20px;
+    width: 500px;
+}

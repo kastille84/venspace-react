@@ -34,6 +34,10 @@ router.post('/register', [
             .escape()
             .trim()
             .exists(),
+        check('phone')
+            .escape()
+            .trim()
+            .exists(),
         check('password')
             .escape()
             .trim()
@@ -46,6 +50,7 @@ router.post('/register', [
         const user = new User({
             name: req.body.name,
             email: req.body.email.toLowerCase(),
+            phone: req.body.phone,
             password: hashPass
         })
 

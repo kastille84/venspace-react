@@ -17,6 +17,10 @@ class Register extends Component {
 				value: '',
 				validation: []
 			},
+			phone: {
+				value: '',
+				validation: []
+			},
 			password: {
 				value: '',
 				validation: []
@@ -65,6 +69,11 @@ class Register extends Component {
                 if (!value.trim().match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)) {
                     errorMessage.push("Not a Valid Email");
                 }
+				return errorMessage;
+			case 'phone':
+				if (value.trim().length > 30) {
+					errorMessage.push(`${control.toUpperCase()} must not be more than 30 characters`);
+				}
 				return errorMessage;
 			case 'password':
                 // check is maxlength 20 chars
@@ -170,10 +179,20 @@ class Register extends Component {
 						<div className="form-group">
                             <label>Email</label>
                             <input 
-                                type='text' 
+                                type='email' 
                                 className="form-control"
 								name="email"
 								value={this.state.email}
+								onChange={this.inputChanged}
+							/>
+                        </div>
+						<div className="form-group">
+                            <label>Phone</label>
+                            <input 
+                                type='tel' 
+                                className="form-control"
+								name="phone"
+								value={this.state.phone}
 								onChange={this.inputChanged}
 							/>
                         </div>

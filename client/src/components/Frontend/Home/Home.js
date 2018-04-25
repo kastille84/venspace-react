@@ -46,7 +46,7 @@ class Home extends Component {
                     {this.props.locationRedux.validPlace === false? <InfoMessage messageType="fail">Your search is too broad. Please search a business location or address.</InfoMessage>: null}
                     {this.state.ipWasSet && this.state.showMap? <MapWithASearchBox /> : null}
                 </div>
-                <FlyerListWrapper></FlyerListWrapper>
+                <FlyerListWrapper mode='frontend'></FlyerListWrapper>
             </div>
         )
     }

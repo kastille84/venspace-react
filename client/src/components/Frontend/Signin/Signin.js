@@ -112,7 +112,7 @@ class Signin extends Component {
                 .then(response => {
                     //console.log('data', response.data);
                     // set user data on Redux
-                    this.props.onSetUser(response.data);
+                    this.props.onSetUser(response.data.user);
                     this.props.onSetSignin(true);
                     // redirect them to s
                     this.props.history.push('/manage');

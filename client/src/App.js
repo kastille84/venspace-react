@@ -10,6 +10,7 @@ import Home from './components/Frontend/Home/Home';
 import Register from './components/Frontend/Register/Register';
 import Signin from './components/Frontend/Signin/Signin';
 import ManageHome from './components/Manage/Home/Home';
+import FlyerMaker from './components/Flyer/FlyerMaker/FlyerMaker';
 
 
 class App extends Component {
@@ -17,7 +18,10 @@ class App extends Component {
   // guard for only signined user
   getManage = () => {
     return (
-      <Route path="/manage/" exact component={ManageHome}  />
+      <Switch>
+        <Route path="/manage/" exact component={ManageHome}  />
+        <Route path='/manage/make-flyer' component={FlyerMaker} />
+      </Switch>
     )
   }
 
