@@ -19,6 +19,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 validPlace: action.bool
             }
+        case actionTypes.SET_SELECTED_PLACE:
+            return {
+                ...state,
+                selectedPlace: action.place
+            }
         default:
             return state;
     }

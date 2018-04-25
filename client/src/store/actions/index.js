@@ -7,5 +7,6 @@ export {
 
 export {
     setIpLocation,
-    setValidPlace
+    setValidPlace,
+    setSelectedPlace
 } from './location';

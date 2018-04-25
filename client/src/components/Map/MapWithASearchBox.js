@@ -47,6 +47,14 @@ const MapWithASearchBox = compose(
           console.log('places', places);
           // ******* Check Validity of Place
           checkPlaceValidity(places, this.props);
+          // ******* Set selected place
+          const selectedPlace = {
+              placeId: places[0].place_id,
+              formatted_address: places[0].formatted_address,
+              name: places[0].name
+          }
+
+          this.props.onSetSelectedPlace(selectedPlace);
 
           const bounds = new google.maps.LatLngBounds();
 
@@ -133,7 +141,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSetValidPlace: (bool) => dispatch(actions.setValidPlace(bool))
+        onSetValidPlace: (bool) => dispatch(actions.setValidPlace(bool)),
+        onSetSelectedPlace: (place) => dispatch(actions.setSelectedPlace(place))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(MapWithASearchBox);

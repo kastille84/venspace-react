@@ -13,3 +13,10 @@ export const setValidPlace = (bool) => {
         bool: bool
     }
 }
+
+export const setSelectedPlace = (place) => {
+    return {
+        type: actionTypes.SET_SELECTED_PLACE,
+        place: place
+    }
+}
