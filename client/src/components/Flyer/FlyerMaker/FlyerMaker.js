@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
+import axios from 'axios';
 import InfoMessage from '../../UI/Message/InfoMessage';
 import classes from './FlyerMaker.css';
 
@@ -34,6 +35,8 @@ class FlyerMaker extends Component {
                     let num = this.state.imgNum;
                     this.setState({image1: e.target.files[0]});
                     this.setState({imgNum: ++num});
+                } else {
+                    this.setState({imgErrors: 'Wrong File Type'});
                 }
             } else {
                 // image 2
@@ -42,6 +45,8 @@ class FlyerMaker extends Component {
                     let num = this.state.imgNum;
                     this.setState({image2: e.target.files[0]})
                     this.setState({imgNum: ++num});
+                } else {
+                    this.setState({imgErrors: 'Wrong File Type'});
                 }
             }
         } else {
@@ -117,16 +122,70 @@ class FlyerMaker extends Component {
         }
         
     }
+    errorDisplay = () => {
+        let errors =[];
+        let errorDisplay = null;
+
+        if (!this.state.isValid) {
+            // load up the errors
+            for (let ctr in this.state.controls) {
+                if (this.state.controls[ctr].validation.length > 0) {
+                    errors.push(...this.state.controls[ctr].validation);
+                }
+            }
+            // map the errors with infomessage
+            errorDisplay = (
+                <ul style={{listStyle: 'none'}}>
+                    {errors.map( (err, index) => (
+                        <li key={index}>
+                            <InfoMessage messageType="fail">{err}</InfoMessage>
+                        </li>
+                    ))}
+                </ul>
+            )
+        }
+        return errorDisplay;
+     }
 
     handleSubmit = (e)=> {
+        e.preventDefault();
+        let isValid = true;
+        // create data to send to server
+            // && check whole form validity
+        const data = {};
+        for(let ctr in this.state.controls) {
+            data[ctr] = this.state.controls[ctr].value;
+            if (this.state.controls[ctr].validation.length > 0) {
+                // then it didn't pass validation
+                isValid = false;
+            }
+        }
+        data['phone'] = this.state.phone;
+        data['email'] = this.state.email;
+        data['image1'] = this.state.image1;
+        data['image2'] = this.state.image2;
+        data['userId'] = this.props.userRedux.user._id;
 
+        // if isValid stays true 
+        if (isValid) {
+            // make axios call
+            axios.post('/make-flyer', data)
+                .then(response => {
+                    
+                })
+                .catch(e => {
+
+                })
+        }
     }
 
     render() {
+        let errorDisplay= this.errorDisplay();
         return (
             <div className={classes.FlyerMaker}>
                 <h3>Make Your Flyer</h3>
                 <section>
+                    {errorDisplay}
                     <form onSubmit={this.handleSubmit}>
                         <div className='form-group'>
                             <label>Flyer Heading</label>
@@ -135,7 +194,7 @@ class FlyerMaker extends Component {
                                 name="heading"
                                 onChange={this.inputChanged} />
                         </div>
-                        {this.state.imgErrors? <InfoMessage messageType="fail">Max Pics Reached!</InfoMessage>: null}                     
+                        {this.state.imgErrors? <InfoMessage messageType="fail">{this.state.imgErrors}</InfoMessage>: null}                     
                         {this.state.imgNum > 0? <p>Num of Pics Uploaded: <br/> <span>{this.state.imgNum} / 2</span></p> : null}
                         
                         <div className='form-group'>
@@ -151,12 +210,13 @@ class FlyerMaker extends Component {
                             <textarea 
                                 className='form-control'
                                 name="description" 
-                                onChange={this.inputChanged} ></textarea>
+                                onChange={this.inputChanged} 
+                                rows="8"></textarea>
                         </div>
                         <div className='form-group'>
                             <label>Way to Contact You</label>
                             <div className='btn-group-sm'>
-                                <input type="checkbox" value="email" onClick={this.onEmail}/> Email
+                                <input type="checkbox" value="email" onClick={this.onEmail}/> Email &nbsp; &nbsp;
                                 <input type="checkbox" value="phone" onClick={this.onPhone}/> Phone                        
                             </div>
                         </div>
@@ -170,4 +230,9 @@ class FlyerMaker extends Component {
     }
 }
 
-export default FlyerMaker;
+const mapStateToProps = (state) => {
+    return {
+        userRedux: state.userRedux
+    }
+}
+export default connect()(FlyerMaker);
