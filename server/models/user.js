@@ -19,7 +19,11 @@ const schema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    flyers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Flyer'
+    }]
 
 });
 

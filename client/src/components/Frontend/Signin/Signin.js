@@ -114,6 +114,8 @@ class Signin extends Component {
                     // set user data on Redux
                     this.props.onSetUser(response.data.user);
                     this.props.onSetSignin(true);
+                    //this.props.onSetValidPlace(false);
+                    this.props.onSetSelectedPlace(null);
                     // redirect them to s
                     this.props.history.push('/manage');
                 })
@@ -176,7 +178,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onSetUser: (data) => dispatch(actions.setUser(data)),
-        onSetSignin: (bool) => dispatch(actions.setSignin(bool))
+        onSetSignin: (bool) => dispatch(actions.setSignin(bool)),
+        onSetValidPlace: (bool) => dispatch(actions.setValidPlace(bool)),
+        onSetSelectedPlace: (val)=> dispatch(actions.setSelectedPlace(null))
     }
 }
 

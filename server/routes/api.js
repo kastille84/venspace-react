@@ -10,6 +10,8 @@ const randomString = require('random-string');
 const nodemailer = require('nodemailer');
 
 const User = require('../models/user');
+const Flyer = require('../models/flyer');
+const Place = require('../models/place');
 
 mongoose.connect('mongodb://localhost:27017/venspace');
 mongoose.Promise= global.Promise;
@@ -111,12 +113,73 @@ router.post('/make-flyer', [
     checkInputs(req, res);
     console.log(req.body);
     console.log('files',req.files)
+    // user
+    User.findById(req.body.userId).exec()
+        .then(user => {
+        // places
+            Place.findOne({place_id: req.body.place_id}).exec()
+                .then(place => {
+                    if (place) {
+
+                    } else {
+                        // no place found, then create a new place
+                        const newPlace = new Place({
+                            place_id: req.body.selectedPlace.place_id,
+                            formatted_address: req.body.selectedPlace.formatted_address,
+                            name: req.body.selectedPlace.name
+                        });
+                        newPlace.save((err, result) => {
+                            if (err){
+                                res.status(500).json({message: 'could not save new place'});
+                            }
+                            // create flyer
+                                // get images
+                                let imagesArr = [];
+                                if (req.files.image1) 
+                                    imagesArr.push(req.files.image1.name);
+                                if (req.files.image2) 
+                                    imagesArr.push(req.files.image2.name);                                
+                            const newFlyer = new Flyer({
+                                user_id: user._id,
+                                place_id: result._id,
+                                heading: req.body.heading,
+                                description: req.body.description,
+                                contact: {
+                                    phone: req.body.phone,
+                                    email: req.body.email
+                                },
+                                images: imagesArr
+                            });
+                            newFlyer.save((err, resultFlyer) => {
+                                if (err){
+                                    res.status(500).json({message: 'could not save flyer'});
+                                }
+                                // user needs the flyer's id
+                                let userFlyer = user.flyers;
+                                userFlyers.push(resultFlyer._id)
+                                user.update({flyers: userFlyers});
+                                //everythin is GOOOOOOOD
+                                
+                            })
+                        });
+                    }
+
+                })
+                .catch(err => {
+                    // could not search place
+                })
+        // flyers
+
+        })
+        .catch(err => {
+            // no user found
+        })
+    
+
     if (req.files) {
         if (req.files.image1) {
             const img1= req.files.image1;
             const img1Name = img1.name;
-            console.log('******')
-            console.log('dirname', __dirname);
             img1.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img1Name), (err) => {
                 if (err) {
                     return res.status(500).json({message: 'Could Not mv file'});
