@@ -152,24 +152,49 @@ class FlyerMaker extends Component {
         let isValid = true;
         // create data to send to server
             // && check whole form validity
-        const data = {};
+        const data = new FormData();
         for(let ctr in this.state.controls) {
-            data[ctr] = this.state.controls[ctr].value;
+            //data[ctr] = this.state.controls[ctr].value;
+            data.append(ctr, this.state.controls[ctr].value);
             if (this.state.controls[ctr].validation.length > 0) {
                 // then it didn't pass validation
                 isValid = false;
             }
         }
-        data['phone'] = this.state.phone;
-        data['email'] = this.state.email;
-        data['image1'] = this.state.image1;
-        data['image2'] = this.state.image2;
-        data['userId'] = this.props.userRedux.user._id;
+        data.append('userId',this.props.userRedux.user._id);
+        data.append('phone',this.state.phone);
+        data.append('email',this.state.email);
+        data.append('selectedPlace', this.props.locationRedux.selectedPlace);
+        // set up formdata for images
+        if (this.state.image1) {
+            // const img1 = new FormData();
+            // console.log('img1', this.state.image1);
+            // console.log('name', this.state.image1.name);
+            // img1.append('img1', this.state.image1);
+            // img1.append('img1Name', this.state.image1.name);
+            // data['image1'] = img1;
+            // console.log('dataforma', img1);
+            data.append('image1', this.state.image1);
+            
+        }
+        if (this.state.image2) {
+            // const img2 = new FormData();
+            // img2.append('img2', this.state.image2)
+            // img2.append('img2Name', this.state.image2.name);
+            // data['image2'] = img2;
+            data('image2', this.state.image2);
+        }
+        console.log('datazz', data);
 
         // if isValid stays true 
         if (isValid) {
+            const config = {
+                headers: {
+                    'content-type': undefined
+                }
+            }
             // make axios call
-            axios.post('/make-flyer', data)
+            axios.post('/make-flyer', data, config)
                 .then(response => {
                     
                 })
@@ -232,7 +257,8 @@ class FlyerMaker extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userRedux: state.userRedux
+        userRedux: state.userRedux,
+        locationRedux: state.locationRedux
     }
 }
-export default connect()(FlyerMaker);
+export default connect(mapStateToProps)(FlyerMaker);

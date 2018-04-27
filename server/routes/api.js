@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const router = express.Router();
 const mongoose = require('mongoose');
 const ObjectID = require('mongodb').ObjectID;
@@ -95,6 +96,48 @@ router.post('/signin', [
             })
 
 });
+
+// make Flyer
+router.post('/make-flyer', [
+    check('heading')
+        .exists()
+        .escape()
+        .trim(),
+    check('description')
+        .escape()
+        .exists()
+        .trim()
+], (req, res) =>{
+    checkInputs(req, res);
+    console.log(req.body);
+    console.log('files',req.files)
+    if (req.files) {
+        if (req.files.image1) {
+            const img1= req.files.image1;
+            const img1Name = img1.name;
+            console.log('******')
+            console.log('dirname', __dirname);
+            img1.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img1Name), (err) => {
+                if (err) {
+                    return res.status(500).json({message: 'Could Not mv file'});
+                } else {
+                    return res.status(200).json({message: 'mv done'});
+                }
+            })
+        }
+        if (req.files.image2) {
+            const img2= req.files.image2;
+            const img2Name = img2.name;
+            img2.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img2Name), (err) => {
+                if (err) {
+                    return res.status(500).json({message: 'Could Not mv file'});
+                } else {
+                    return res.status(200).json({message: 'mv done'});
+                }
+            })
+        }
+    }
+})
 
 // router.get('/users', (req, res) => {
 //     // User.find()
