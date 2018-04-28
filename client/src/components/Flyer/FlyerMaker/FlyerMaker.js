@@ -184,9 +184,8 @@ class FlyerMaker extends Component {
             // img2.append('img2', this.state.image2)
             // img2.append('img2Name', this.state.image2.name);
             // data['image2'] = img2;
-            data('image2', this.state.image2);
+            data.append('image2', this.state.image2);
         }
-        console.log('datazz', data);
 
         // if isValid stays true 
         if (isValid) {

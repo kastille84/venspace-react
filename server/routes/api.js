@@ -113,21 +113,26 @@ router.post('/make-flyer', [
     checkInputs(req, res);
     console.log(req.body);
     console.log('files', req.files);
+    const img1Extra = randomString({length: 5});
+    const img2Extra = randomString({length: 5});
+
     if (req.files) {
         if (req.files.image1) {
             const img1= req.files.image1;
-            const img1Name = img1.name;
+            const img1Name = img1Extra+img1.name;
             img1.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img1Name), (err) => {
                 if (err) {
+                    console.log('pre')
                     return res.status(500).json({message: 'Could Not mv file'});
                 } 
             })
         }
         if (req.files.image2) {
             const img2= req.files.image2;
-            const img2Name = img2.name;
+            const img2Name = img2Extra+img2.name;
             img2.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img2Name), (err) => {
                 if (err) {
+                    console.log('pre2')
                     return res.status(500).json({message: 'Could Not mv file'});
                 } 
             })
@@ -147,9 +152,9 @@ router.post('/make-flyer', [
                             // get images
                             let imagesArr = [];
                             if (req.files.image1) 
-                                imagesArr.push(req.files.image1.name);
+                                imagesArr.push(img1Extra+req.files.image1.name);
                             if (req.files.image2) 
-                                imagesArr.push(req.files.image2.name);                                
+                                imagesArr.push(img2Extra+req.files.image2.name);                                
                         const newFlyer = new Flyer({
                             user_id: user._id,
                             place_id: place._id,
@@ -198,9 +203,9 @@ router.post('/make-flyer', [
                                 // get images
                                 let imagesArr = [];
                                 if (req.files.image1) 
-                                    imagesArr.push(req.files.image1.name);
+                                    imagesArr.push(img1Extra+req.files.image1.name);
                                 if (req.files.image2) 
-                                    imagesArr.push(req.files.image2.name);                                
+                                    imagesArr.push(img2Extra+req.files.image2.name);                                
                             const newFlyer = new Flyer({
                                 user_id: user._id,
                                 place_id: result._id,
@@ -221,16 +226,20 @@ router.post('/make-flyer', [
                                 // user needs the flyer's id
                                 let userFlyer = user.flyers;
                                 userFlyer.push(resultFlyer._id)
-                                user.update({flyers: userFlyer}).exec()
-                                    .then( resultUp => {
-                                        console.log('9.1', resultUp)
-                                        //everythin is GOOOOOOOD
-                                        return res.status(200).json({flyer: resultFlyer});
-                                    })
-                                    .catch(err => {
-                                        console.log('9.2', err)
-                                        return res.status(500).json({message: 'could not update user'});
-                                    });                                
+                                user.update({flyers: userFlyer}, (err, userResult) => {
+                                    if (err) {return res.status(500).json({message: 'could not update user'});}
+                                    // return res.status(200).json({flyer: resultFlyer});
+                                    return res.status(200);
+                                })
+                                    // .then( resultUp => {
+                                    //     console.log('9.1', resultUp)
+                                    //     //everythin is GOOOOOOOD
+                                    //     return res.status(200).json({flyer: resultFlyer});
+                                    // })
+                                    // .catch(err => {
+                                    //     console.log('9.2', err)
+                                    //     return res.status(500).json({message: 'could not update user'});
+                                    // });                                
                             });
                         });
                     }

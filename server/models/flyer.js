@@ -4,10 +4,12 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     place_id: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'Place',
         required: true
     },
     heading: {
