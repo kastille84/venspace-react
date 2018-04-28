@@ -112,26 +112,88 @@ router.post('/make-flyer', [
 ], (req, res) =>{
     checkInputs(req, res);
     console.log(req.body);
-    console.log('files',req.files)
+    console.log('files', req.files);
+    if (req.files) {
+        if (req.files.image1) {
+            const img1= req.files.image1;
+            const img1Name = img1.name;
+            img1.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img1Name), (err) => {
+                if (err) {
+                    return res.status(500).json({message: 'Could Not mv file'});
+                } 
+            })
+        }
+        if (req.files.image2) {
+            const img2= req.files.image2;
+            const img2Name = img2.name;
+            img2.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img2Name), (err) => {
+                if (err) {
+                    return res.status(500).json({message: 'Could Not mv file'});
+                } 
+            })
+        }
+    }
     // user
     User.findById(req.body.userId).exec()
         .then(user => {
+            console.log('1');
         // places
-            Place.findOne({place_id: req.body.place_id}).exec()
+            Place.findOne({place_id: req.body.placeId}).exec()
                 .then(place => {
+                    console.log('2');
                     if (place) {
-
+                        console.log('3');
+                    // create flyer
+                            // get images
+                            let imagesArr = [];
+                            if (req.files.image1) 
+                                imagesArr.push(req.files.image1.name);
+                            if (req.files.image2) 
+                                imagesArr.push(req.files.image2.name);                                
+                        const newFlyer = new Flyer({
+                            user_id: user._id,
+                            place_id: place._id,
+                            heading: req.body.heading,
+                            description: req.body.description,
+                            contact: {
+                                phone: req.body.phone,
+                                email: req.body.email
+                            },
+                            images: imagesArr
+                        });
+                        newFlyer.save((err, resultFlyer) => {
+                            console.log('4');
+                            if (err){
+                                return res.status(500).json({message: 'could not save flyer'});
+                            }
+                            // user needs the flyer's id
+                            let userFlyer = user.flyers;
+                            userFlyer.push(resultFlyer._id)
+                            user.update({flyers: userFlyer}).exec()
+                                .then( resultUp => {
+                                    //everythin is GOOOOOOOD
+                                    return res.status(200).json({flyer: resultFlyer});
+                                })
+                                .catch(err => {
+                                    return res.status(500).json({message: 'could not update user'});
+                                }); 
+                        })
                     } else {
+                        console.log('5');
                         // no place found, then create a new place
                         const newPlace = new Place({
-                            place_id: req.body.selectedPlace.place_id,
-                            formatted_address: req.body.selectedPlace.formatted_address,
-                            name: req.body.selectedPlace.name
+                            place_id: req.body.placeId,
+                            formatted_address: req.body.formatted_address,
+                            name: req.body.name
                         });
                         newPlace.save((err, result) => {
+                            console.log('6');
                             if (err){
-                                res.status(500).json({message: 'could not save new place'});
+                                console.log('6.1', err);
+                                console.log('formatted', req.body.formatted_address)
+                                return res.status(500).json({message: 'could not save new place'});
                             }
+                            console.log('7');
                             // create flyer
                                 // get images
                                 let imagesArr = [];
@@ -151,55 +213,40 @@ router.post('/make-flyer', [
                                 images: imagesArr
                             });
                             newFlyer.save((err, resultFlyer) => {
+                                console.log('8');
                                 if (err){
-                                    res.status(500).json({message: 'could not save flyer'});
+                                    return res.status(500).json({message: 'could not save flyer'});
                                 }
+                                console.log('9');
                                 // user needs the flyer's id
                                 let userFlyer = user.flyers;
-                                userFlyers.push(resultFlyer._id)
-                                user.update({flyers: userFlyers});
-                                //everythin is GOOOOOOOD
-                                
-                            })
+                                userFlyer.push(resultFlyer._id)
+                                user.update({flyers: userFlyer}).exec()
+                                    .then( resultUp => {
+                                        console.log('9.1', resultUp)
+                                        //everythin is GOOOOOOOD
+                                        return res.status(200).json({flyer: resultFlyer});
+                                    })
+                                    .catch(err => {
+                                        console.log('9.2', err)
+                                        return res.status(500).json({message: 'could not update user'});
+                                    });                                
+                            });
                         });
                     }
 
                 })
                 .catch(err => {
+                    console.log('10');
                     // could not search place
-                })
-        // flyers
-
+                    return res.status(500).json({message: 'could not search place'})
+                });
         })
         .catch(err => {
+            console.log('11');
             // no user found
-        })
-    
-
-    if (req.files) {
-        if (req.files.image1) {
-            const img1= req.files.image1;
-            const img1Name = img1.name;
-            img1.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img1Name), (err) => {
-                if (err) {
-                    return res.status(500).json({message: 'Could Not mv file'});
-                } else {
-                    return res.status(200).json({message: 'mv done'});
-                }
-            })
-        }
-        if (req.files.image2) {
-            const img2= req.files.image2;
-            const img2Name = img2.name;
-            img2.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img2Name), (err) => {
-                if (err) {
-                    return res.status(500).json({message: 'Could Not mv file'});
-                } else {
-                    return res.status(200).json({message: 'mv done'});
-                }
-            })
-        }
-    }
+            return res.status(500).json({message: 'could not find user'})
+        });
 })
 
 // router.get('/users', (req, res) => {

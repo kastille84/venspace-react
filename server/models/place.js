@@ -8,7 +8,6 @@ const schema = new Schema({
     },
     formatted_address: {
         type: String
-
     },
     name: {
         type: String

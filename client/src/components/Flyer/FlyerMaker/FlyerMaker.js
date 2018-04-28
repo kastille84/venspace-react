@@ -164,7 +164,9 @@ class FlyerMaker extends Component {
         data.append('userId',this.props.userRedux.user._id);
         data.append('phone',this.state.phone);
         data.append('email',this.state.email);
-        data.append('selectedPlace', this.props.locationRedux.selectedPlace);
+        data.append('placeId', this.props.locationRedux.selectedPlace.placeId);
+        data.append('formatted_address', this.props.locationRedux.selectedPlace.formatted_address);
+        data.append('name', this.props.locationRedux.selectedPlace.name);
         // set up formdata for images
         if (this.state.image1) {
             // const img1 = new FormData();
@@ -188,18 +190,18 @@ class FlyerMaker extends Component {
 
         // if isValid stays true 
         if (isValid) {
-            const config = {
-                headers: {
-                    'content-type': undefined
-                }
-            }
+            // const config = {
+            //     headers: {
+            //         'content-type': undefined
+            //     }
+            // }
             // make axios call
-            axios.post('/make-flyer', data, config)
+            axios.post('/make-flyer', data)
                 .then(response => {
-                    
+                    console.log('i made it', response);
                 })
-                .catch(e => {
-
+                .catch(err => {
+                    console.log('i did not make it', err);
                 })
         }
     }
