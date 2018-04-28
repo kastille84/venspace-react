@@ -119,7 +119,7 @@ router.post('/make-flyer', [
     if (req.files) {
         if (req.files.image1) {
             const img1= req.files.image1;
-            const img1Name = img1Extra+img1.name;
+            const img1Name = formatFileName(img1Extra+img1.name);
             img1.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img1Name), (err) => {
                 if (err) {
                     console.log('pre')
@@ -129,7 +129,7 @@ router.post('/make-flyer', [
         }
         if (req.files.image2) {
             const img2= req.files.image2;
-            const img2Name = img2Extra+img2.name;
+            const img2Name = formatFileName(img2Extra+img2.name);
             img2.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img2Name), (err) => {
                 if (err) {
                     console.log('pre2')
@@ -152,9 +152,9 @@ router.post('/make-flyer', [
                             // get images
                             let imagesArr = [];
                             if (req.files.image1) 
-                                imagesArr.push(img1Extra+req.files.image1.name);
+                                imagesArr.push(formatFileName(img1Extra+req.files.image1.name));
                             if (req.files.image2) 
-                                imagesArr.push(img2Extra+req.files.image2.name);                                
+                                imagesArr.push(formatFileName(img2Extra+req.files.image2.name));                                
                         const newFlyer = new Flyer({
                             user_id: user._id,
                             place_id: place._id,
@@ -203,9 +203,9 @@ router.post('/make-flyer', [
                                 // get images
                                 let imagesArr = [];
                                 if (req.files.image1) 
-                                    imagesArr.push(img1Extra+req.files.image1.name);
+                                    imagesArr.push(formatFileName(img1Extra+req.files.image1.name));
                                 if (req.files.image2) 
-                                    imagesArr.push(img2Extra+req.files.image2.name);                                
+                                    imagesArr.push(formatFileName(img2Extra+req.files.image2.name));                                
                             const newFlyer = new Flyer({
                                 user_id: user._id,
                                 place_id: result._id,
@@ -265,5 +265,17 @@ router.post('/make-flyer', [
 //     //     });
 //     res.status(200).json({datum: 'whoarda'});
 // })
+
+const formatFileName = (str) => {
+    let newStr = '';
+    for( s of str) {
+        if (s === '-') {
+            newStr += "_";
+        } else {
+            newStr += s;
+        }
+    }
+    return newStr;
+}
 
 module.exports = router;
