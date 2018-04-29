@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import InfoMessage from '../../UI/Message/InfoMessage';
 import classes from './FlyerMaker.css';
+import * as actions from '../../../store/actions/index';
 
 class FlyerMaker extends Component {
     state = {
@@ -189,17 +190,16 @@ class FlyerMaker extends Component {
 
         // if isValid stays true 
         if (isValid) {
-            // const config = {
-            //     headers: {
-            //         'content-type': undefined
-            //     }
-            // }
             // make axios call
             axios.post('/make-flyer', data)
                 .then(response => {
-                    console.log('i made it', response);
+                    // set FlyerMade
+                    this.props.onSetFlyerMade(true);
+                    // redirect to manage-home
+                    this.props.history.push('/manage/');
                 })
                 .catch(err => {
+                    // #TODO- Handle ReqErrors
                     console.log('i did not make it', err);
                 })
         }
@@ -262,4 +262,9 @@ const mapStateToProps = (state) => {
         locationRedux: state.locationRedux
     }
 }
-export default connect(mapStateToProps)(FlyerMaker);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSetFlyerMade: (bool) => dispatch(actions.setFlyerMade(bool))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(FlyerMaker);

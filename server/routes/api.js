@@ -80,14 +80,23 @@ router.post('/signin', [
         checkInputs(req, res);
 
         User.findOne({email: req.body.email}).exec()
-            .then(user => {
+            .then(user => {                
                 // compare passwords
                 bcrypt.compare(req.body.password, user.password, (err,same) => {
                     if (err) {
                         return res.status(500).json({message: 'could not check password'});
                     }
                     if (same) {
-                        return res.status(200).json({user: user});
+                        // get all the Flyers
+                        Flyer.find({user_id: user._id}).populate('place_id').exec()
+                            .then(flyers => {
+
+                                return res.status(200).json({user: user, flyers: flyers});
+                            })
+                            .catch(err => {
+                                return res.status(500).json({message: 'could not populate flyers'});
+                            })
+                        
                     } else {
                         return res.status(500).json({message: 'passwords do not match'});
                     }
@@ -174,14 +183,11 @@ router.post('/make-flyer', [
                             // user needs the flyer's id
                             let userFlyer = user.flyers;
                             userFlyer.push(resultFlyer._id)
-                            user.update({flyers: userFlyer}).exec()
-                                .then( resultUp => {
-                                    //everythin is GOOOOOOOD
-                                    return res.status(200).json({flyer: resultFlyer});
-                                })
-                                .catch(err => {
-                                    return res.status(500).json({message: 'could not update user'});
-                                }); 
+                            user.update({flyers: userFlyer}, (err, userResult) => {
+                                if (err) {return res.status(500).json({message: 'could not update user'});}
+                                // return res.status(200).json({flyer: resultFlyer});
+                                return res.status(200).json({message: 'success'});
+                            }) 
                         })
                     } else {
                         console.log('5');
@@ -229,7 +235,7 @@ router.post('/make-flyer', [
                                 user.update({flyers: userFlyer}, (err, userResult) => {
                                     if (err) {return res.status(500).json({message: 'could not update user'});}
                                     // return res.status(200).json({flyer: resultFlyer});
-                                    return res.status(200);
+                                    return res.status(200).json({message: 'success'});
                                 })
                                     // .then( resultUp => {
                                     //     console.log('9.1', resultUp)
@@ -269,7 +275,7 @@ router.post('/make-flyer', [
 const formatFileName = (str) => {
     let newStr = '';
     for( s of str) {
-        if (s === '-') {
+        if (s === '-' || s === ' ') {
             newStr += "_";
         } else {
             newStr += s;

@@ -10,3 +10,8 @@ export {
     setValidPlace,
     setSelectedPlace
 } from './location';
+
+export {
+    setFlyerMade,
+    setFlyers
+} from './flyer';

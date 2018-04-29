@@ -12,10 +12,12 @@ import { Provider } from 'react-redux'
 
 import userReducer from './store/reducers/user';
 import locationReducer from './store/reducers/location';
+import flyerReducer from './store/reducers/flyer';
 
 const rootReducer = combineReducers({
     userRedux: userReducer,
-    locationRedux: locationReducer
+    locationRedux: locationReducer,
+    flyerRedux: flyerReducer
 });
 
 axios.defaults.baseURL="http://localhost:5000/api";

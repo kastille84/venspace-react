@@ -116,6 +116,8 @@ class Signin extends Component {
                     this.props.onSetSignin(true);
                     //this.props.onSetValidPlace(false);
                     this.props.onSetSelectedPlace(null);
+                    // set the populated flyers
+                    this.props.onSetFlyers(response.data.flyers);
                     // redirect them to s
                     this.props.history.push('/manage');
                 })
@@ -180,7 +182,8 @@ const mapDispatchToProps = (dispatch) => {
         onSetUser: (data) => dispatch(actions.setUser(data)),
         onSetSignin: (bool) => dispatch(actions.setSignin(bool)),
         onSetValidPlace: (bool) => dispatch(actions.setValidPlace(bool)),
-        onSetSelectedPlace: (val)=> dispatch(actions.setSelectedPlace(null))
+        onSetSelectedPlace: (val)=> dispatch(actions.setSelectedPlace(null)),
+        onSetFlyers: (flyers) => dispatch(actions.setFlyers(flyers))
     }
 }
 
