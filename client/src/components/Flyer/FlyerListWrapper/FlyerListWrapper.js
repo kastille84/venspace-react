@@ -12,12 +12,17 @@ class FlyerListWrapper extends Component {
 
     render() {
         return (
-            <div>
+            <div>                
+                <section>
                 {(this.props.userRedux.signedIn
-                    &&this.props.locationRedux.selectedPlace
-                    &&this.props.mode==='frontend')? <section><button onClick={this.onMakeFlyerRedirect}>Put a Flyer at this Location</button></section>: null}
+                    &&this.props.locationRedux.selectedPlace)?
+                    <button onClick={this.onMakeFlyerRedirect}>Put a Flyer at this Location</button>
+                    : 
+                    null
+                }
                     
-                <FlyerList></FlyerList>
+                    <FlyerList></FlyerList>
+                </section>
             </div>
         )
     }

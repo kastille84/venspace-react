@@ -200,17 +200,23 @@ class FlyerMaker extends Component {
                 })
                 .catch(err => {
                     // #TODO- Handle ReqErrors
-                    console.log('i did not make it', err);
+                    this.setState({reqErrors: 'Could Not Make Flyer.'})
                 })
         }
     }
 
     render() {
         let errorDisplay= this.errorDisplay();
+        // reqErrors
+        let reqErrorsDisplay = null;
+        if (this.state.reqErrors) {
+            reqErrorsDisplay = <InfoMessage messageType='fail'>Could No Register. Check Your Input.</InfoMessage>
+        }
         return (
             <div className={classes.FlyerMaker}>
                 <h3>Make Your Flyer</h3>
                 <section>
+                    {reqErrorsDisplay}
                     {errorDisplay}
                     <form onSubmit={this.handleSubmit}>
                         <div className='form-group'>
