@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import FlyerListItem from '../FlyerListItem/FlyerListItem';
@@ -77,7 +78,23 @@ class FlyerList extends Component {
                 
                 <ul className="list-group">
                     {this.props.flyerRedux.flyers.map(flyer => {
-                        return <li className="list-group-item" key={flyer._id}><FlyerListItem flyer={flyer}></FlyerListItem></li>;
+                        const link = '/view-flyer/'+flyer._id;
+                        if (this.props.userRedux.user !== null && flyer.user._id === this.props.userRedux.user._id) {
+                            return (
+                                <li className="list-group-item" key={flyer._id}>
+                                    <Link to={link}>
+                                        <span className="far fa-user"></span>
+                                        <FlyerListItem flyer={flyer}></FlyerListItem>
+                                    </Link>
+                                </li>);
+                        } else {
+                            return (
+                                <li className="list-group-item" key={flyer._id}>
+                                    <Link to={link}>
+                                        <FlyerListItem flyer={flyer}></FlyerListItem>
+                                    </Link>
+                                </li>);
+                        }
                     })}
                    
                 </ul>

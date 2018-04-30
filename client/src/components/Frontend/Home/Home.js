@@ -31,6 +31,8 @@ class Home extends Component {
         .catch(err => {
             console.log(err);
         })
+
+        this.props.onSetFlyers([]);
     }
     showMapToggle = () => {
         this.setState({showMap: !this.state.showMap});
@@ -46,7 +48,9 @@ class Home extends Component {
                     {this.props.locationRedux.validPlace === false? <InfoMessage messageType="fail">Your search is too broad. Please search a business location or address.</InfoMessage>: null}
                     {this.state.ipWasSet && this.state.showMap? <MapWithASearchBox /> : null}
                 </div>
-                <FlyerListWrapper mode='frontend'></FlyerListWrapper>
+                <div className={classes.MapContainer}>
+                    <FlyerListWrapper mode='frontend'></FlyerListWrapper>
+                </div>
             </div>
         )
     }
@@ -60,7 +64,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-      onSetIpLocation: (ltlng) => dispatch(actions.setIpLocation(ltlng))
+      onSetIpLocation: (ltlng) => dispatch(actions.setIpLocation(ltlng)),
+      onSetFlyers: (flyers) => dispatch(actions.setFlyers(flyers))
     }
 }
 
