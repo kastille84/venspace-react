@@ -55,6 +55,8 @@ const MapWithASearchBox = compose(
           }
 
           this.props.onSetSelectedPlace(selectedPlace);
+          
+
 
           const bounds = new google.maps.LatLngBounds();
 
@@ -77,7 +79,7 @@ const MapWithASearchBox = compose(
           // refs.map.fitBounds(bounds);
         },        
       })
-    },
+    }
   }),
   withScriptjs,
   withGoogleMap
@@ -134,9 +136,13 @@ const checkPlaceValidity = (places, props) => {
     }
 }
 
+
+
 const mapStateToProps = (state) => {
     return {
-        locationRedux: state.locationRedux
+        locationRedux: state.locationRedux,
+        userRedux: state.userRedux,
+        flyerRedux: state.flyerRedux
     }
 }
 const mapDispatchToProps = (dispatch) => {

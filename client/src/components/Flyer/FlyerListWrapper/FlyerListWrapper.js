@@ -1,11 +1,56 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import axios from 'axios';
+import * as actions from '../../../store/actions/index';
 
 import FlyerList from '../FlyerList/FlyerList';
 
 class FlyerListWrapper extends Component {
+    state ={
+        flyerList: []
+    }
+    componentWillMount() {
+        if (this.props.mode === 'backend') {
+            console.log('whoa')
+            axios.get(`flyers-by-user/${this.props.userRedux.user._id}`)
+                .then(response => {
+                    console.log('im here')
+                    this.props.onSetFlyers(response.data.flyers);
+                }) 
+                .catch(err=> {
+                    console.log('err', err);
+                });
+        }
+    }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.locationRedux.selectedPlace === nextProps.locationRedux.selectedPlace) {
+            return false;
+        }
+        return true;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.locationRedux.selectedPlace !== nextProps.locationRedux.selectedPlace) {
+            if (this.props.mode === 'frontend') {
+                axios.get(`flyers-by-location/${nextProps.locationRedux.selectedPlace.placeId}`)
+                .then(response => {
+                    // no place was found, 
+                        //therefor NO fLYERS
+                    if (response.data.noPlace) {
+                        this.props.onSetFlyers([]);
+                    } else {
+                        // place found, we have flyers
+                        this.props.onSetFlyers(response.data.flyers);
+                    }
+                })
+                .catch(err => {
+                  console.log(err)
+                });
+            } 
+        }
+    }
     onMakeFlyerRedirect= () => {
         this.props.history.push('/manage/make-flyer');
     }
@@ -21,7 +66,7 @@ class FlyerListWrapper extends Component {
                     null
                 }
                     
-                    <FlyerList></FlyerList>
+                    <FlyerList ></FlyerList>
                 </section>
             </div>
         )
@@ -35,4 +80,10 @@ const mapStateToProps = (state) => {
     }
 }   
 
-export default withRouter(connect(mapStateToProps)(FlyerListWrapper));
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSetFlyers: (flyers) => dispatch(actions.setFlyers(flyers))
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FlyerListWrapper));

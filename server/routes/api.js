@@ -108,6 +108,45 @@ router.post('/signin', [
 
 });
 
+// Get Fyers By Location
+router.get('/flyers-by-location/:placeId', (req, res) => {
+    const place_id = req.params['placeId'];
+    Place.findOne({place_id: place_id}).exec()
+        .then(place => {
+            if (place) {
+                console.log('place', place);
+                Flyer.find({place_id: place._id}).populate('user').exec()
+                .then(flyers => {
+                    if (flyers) {
+                        return res.status(200).json({flyers: flyers});
+                    } 
+                })
+                .catch(err => {      
+                    return res.status(500).json({message: 'Could Not Search For Flyers'})
+                });
+            } else {
+                // no place found
+                return res.status(200).json({noPlace: 'No Place was found'});
+            }
+        })
+        .catch(err => {
+
+        })
+    
+});
+
+router.get('/flyers-by-user/:userId', (req, res) =>{
+    const userId = req.params['userId'];
+
+    Flyer.find({user: userId}).populate('user').exec()
+        .then(flyers => {
+                return res.status(200).json({flyers: flyers});            
+        })
+        .catch(err =>{
+            return res.status(500).json({message: 'Could Not Search For Flyers'})
+        })
+})
+
 // make Flyer
 router.post('/make-flyer', [
     check('heading')
@@ -165,7 +204,7 @@ router.post('/make-flyer', [
                             if (req.files.image2) 
                                 imagesArr.push(formatFileName(img2Extra+req.files.image2.name));                                
                         const newFlyer = new Flyer({
-                            user_id: user._id,
+                            user: user._id,
                             place_id: place._id,
                             heading: req.body.heading,
                             description: req.body.description,
@@ -213,7 +252,7 @@ router.post('/make-flyer', [
                                 if (req.files.image2) 
                                     imagesArr.push(formatFileName(img2Extra+req.files.image2.name));                                
                             const newFlyer = new Flyer({
-                                user_id: user._id,
+                                user: user._id,
                                 place_id: result._id,
                                 heading: req.body.heading,
                                 description: req.body.description,
@@ -236,16 +275,7 @@ router.post('/make-flyer', [
                                     if (err) {return res.status(500).json({message: 'could not update user'});}
                                     // return res.status(200).json({flyer: resultFlyer});
                                     return res.status(200).json({message: 'success'});
-                                })
-                                    // .then( resultUp => {
-                                    //     console.log('9.1', resultUp)
-                                    //     //everythin is GOOOOOOOD
-                                    //     return res.status(200).json({flyer: resultFlyer});
-                                    // })
-                                    // .catch(err => {
-                                    //     console.log('9.2', err)
-                                    //     return res.status(500).json({message: 'could not update user'});
-                                    // });                                
+                                });                              
                             });
                         });
                     }
@@ -262,7 +292,8 @@ router.post('/make-flyer', [
             // no user found
             return res.status(500).json({message: 'could not find user'})
         });
-})
+});
+
 
 // router.get('/users', (req, res) => {
 //     // User.find()
