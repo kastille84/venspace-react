@@ -13,5 +13,6 @@ export {
 
 export {
     setFlyerMade,
-    setFlyers
+    setFlyers,
+    setSelectedFlyer
 } from './flyer';

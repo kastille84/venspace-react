@@ -10,3 +10,4 @@ export const SET_USER = 'SET_USER';
 // F L Y E R
 export const SET_FLYER_MADE = 'SET_FLYER_MADE';
 export const SET_FLYERS = 'SET_FLYERS';
+export const SET_SELECTED_FLYER = 'SET_SELECTED_FLYER';

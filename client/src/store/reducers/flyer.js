@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     flyerMade: false,
-    flyers: []
+    flyers: [],
+    selectedFlyer: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -16,6 +17,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 flyers: action.flyers
+            };
+        case actionTypes.SET_SELECTED_FLYER:
+            return {
+                ...state,
+                selectedFlyer: action.flyer
             };
         default:
             return state;

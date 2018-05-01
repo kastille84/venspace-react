@@ -13,3 +13,10 @@ export const setFlyers = (flyers) => {
         flyers: flyers
     }
 }
+
+export const setSelectedFlyer = (flyer) => {
+    return {
+        type: actionTypes.SET_SELECTED_FLYER,
+        flyer: flyer
+    }
+}

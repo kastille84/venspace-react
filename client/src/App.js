@@ -11,6 +11,7 @@ import Register from './components/Frontend/Register/Register';
 import Signin from './components/Frontend/Signin/Signin';
 import ManageHome from './components/Manage/Home/Home';
 import FlyerMaker from './components/Flyer/FlyerMaker/FlyerMaker';
+import FlyerView from './components/Flyer/FlyerView/FlyerView';
 
 
 class App extends Component {
@@ -34,6 +35,7 @@ class App extends Component {
           <Route path="/register" component={Register} />
           <Route path="/signin" component={Signin} />
           {this.props.userRedux.user? this.getManage(): null}  
+          <Route path="/view-flyer/:flyerId" component={FlyerView} />
           <Route render={() => (<Redirect to="/signin" />)} />
         </Switch>
       </div>
