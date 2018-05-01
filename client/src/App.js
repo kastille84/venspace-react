@@ -34,8 +34,8 @@ class App extends Component {
           <Route path="/" exact component={Home} />
           <Route path="/register" component={Register} />
           <Route path="/signin" component={Signin} />
-          {this.props.userRedux.user? this.getManage(): null}  
           <Route path="/view-flyer/:flyerId" component={FlyerView} />
+          {this.props.userRedux.user? this.getManage(): null}  
           <Route render={() => (<Redirect to="/signin" />)} />
         </Switch>
       </div>

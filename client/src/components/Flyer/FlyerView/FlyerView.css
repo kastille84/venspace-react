@@ -1,0 +1,25 @@
+.FlyerView {
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 2px #aaa;
+    margin: 80px auto;    
+    padding: 20px;
+    width: 80%;    
+}
+
+.pictures {
+    width: 80%;
+    margin: auto;
+}
+.pictures img {
+    width: 80px;
+}
+
+.displayPicture {
+    width: 80%;
+    margin: auto;
+}
+
+.description {
+    width: 80%;
+    margin: auto;
+}
