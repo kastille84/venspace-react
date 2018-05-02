@@ -25,6 +25,10 @@ class FlyerView extends Component {
         this.setState({selectedImageSrc: null});
     }
 
+    onEditHandler = (e) => {
+        this.props.history.push('/manage/flyer-edit');
+    }
+
     getPictures = () => {
         if (this.props.flyerRedux.selectedFlyer.images.length > 0) {
             return this.props.flyerRedux.selectedFlyer.images.map((image, index) => {
@@ -61,8 +65,11 @@ class FlyerView extends Component {
             if (this.props.flyerRedux.selectedFlyer.user._id === this.props.userRedux.user._id) {
                 return (
                     <section>
-                        <button className='btn btn-info'>Edit</button>
-                        <button className='btn btn-danger'> - </button>
+                        <button 
+                            className='btn btn-info'
+                            onClick={this.onEditHandler} >Edit</button>
+                        &nbsp;
+                        <button className='btn btn-danger'>&nbsp; X &nbsp;</button>
                     </section>
                 )
             }

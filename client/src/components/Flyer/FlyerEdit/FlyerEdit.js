@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
-import InfoMessage from '../../UI/Message/InfoMessage';
-import classes from './FlyerMaker.css';
-import * as actions from '../../../store/actions/index';
+import classes from './FlyerEdit.css';
 
-class FlyerMaker extends Component {
+import InfoMessage from '../../UI/Message/InfoMessage';
+
+class FlyerEdit extends Component {
     state = {
         controls: {
             heading: {
@@ -25,6 +24,67 @@ class FlyerMaker extends Component {
         email: false,
         isValid: false,
         reqErrors: false
+    }
+
+    componentDidMount() {
+        // set controls
+        let controlsCopy = this.state.controls;
+        controlsCopy.heading.value = this.props.flyerRedux.selectedFlyer.heading;
+        controlsCopy.description.value = this.props.flyerRedux.selectedFlyer.description;
+
+        let imgNumCopy = this.state.imgNum;
+            imgNumCopy = this.props.flyerRedux.selectedFlyer.images.length;
+        let image1 = this.props.flyerRedux.selectedFlyer.images[0] || null;
+        let image2 = this.props.flyerRedux.selectedFlyer.images[1] || null;
+        let phone = this.props.flyerRedux.selectedFlyer.contact.phone;
+        let email = this.props.flyerRedux.selectedFlyer.contact.email;
+
+        this.setState({cotrols: controlsCopy});
+        this.setState({imgNum : imgNumCopy});
+        this.setState({image1: image1});
+        this.setState({image1: image1});
+        this.setState({phone: phone});
+        this.setState({email: email});
+    }
+
+    inputChanged = (event) => {
+        let updatedControls = {...this.state.controls}
+		const inputName = event.target.name;
+		let updatedInput = updatedControls[inputName];
+		
+		updatedInput.value = event.target.value;
+		updatedInput.validation = this.checkValidity(event.target.name, event.target.value);
+		
+		updatedControls[inputName] = updatedInput;
+		this.setState({controls: updatedControls});
+    }
+    checkValidity = (control, value) => {
+        let errorMessage = [];
+		// check all if empty
+		if (value.trim() === '') {					
+			errorMessage.push(`${control.toUpperCase()} must not be empty`);
+		}
+		
+		switch(control) {
+			case 'heading':
+				if (value.trim().length > 100) {
+					errorMessage.push(`${control.toUpperCase()} must not be more than 100 characters`);
+				}
+				return errorMessage;
+			case 'description':
+                // check is maxlength 2000 chars
+                if (value.trim().length > 2000) {
+					errorMessage.push(`${control.toUpperCase()} must not be more than 2000 characters`);
+                }
+                // check is minlength 6 chars
+                if (value.trim().length < 6) {
+					errorMessage.push(`${control.toUpperCase()} must be more than 6 characters`);
+                }
+                return errorMessage;
+			default: 
+				return errorMessage;
+        }
+        
     }
 
     fileChanged = (e) => {        
@@ -83,46 +143,6 @@ class FlyerMaker extends Component {
         this.setState({phone: !this.state.phone});
     }
 
-    inputChanged = (event) => {
-        let updatedControls = {...this.state.controls}
-		const inputName = event.target.name;
-		let updatedInput = updatedControls[inputName];
-		
-		updatedInput.value = event.target.value;
-		updatedInput.validation = this.checkValidity(event.target.name, event.target.value);
-		
-		updatedControls[inputName] = updatedInput;
-		this.setState({controls: updatedControls});
-    }
-
-    checkValidity = (control, value) => {
-        let errorMessage = [];
-		// check all if empty
-		if (value.trim() === '') {					
-			errorMessage.push(`${control.toUpperCase()} must not be empty`);
-		}
-		
-		switch(control) {
-			case 'heading':
-				if (value.trim().length > 100) {
-					errorMessage.push(`${control.toUpperCase()} must not be more than 100 characters`);
-				}
-				return errorMessage;
-			case 'description':
-                // check is maxlength 2000 chars
-                if (value.trim().length > 2000) {
-					errorMessage.push(`${control.toUpperCase()} must not be more than 2000 characters`);
-                }
-                // check is minlength 6 chars
-                if (value.trim().length < 6) {
-					errorMessage.push(`${control.toUpperCase()} must be more than 6 characters`);
-                }
-                return errorMessage;
-			default: 
-				return errorMessage;
-        }
-        
-    }
     errorDisplay = () => {
         let errors =[];
         let errorDisplay = null;
@@ -148,50 +168,8 @@ class FlyerMaker extends Component {
         return errorDisplay;
      }
 
-    handleSubmit = (e)=> {
-        e.preventDefault();
-        let isValid = true;
-        // create data to send to server
-            // && check whole form validity
-        const data = new FormData();
-        for(let ctr in this.state.controls) {
-            //data[ctr] = this.state.controls[ctr].value;
-            data.append(ctr, this.state.controls[ctr].value);
-            if (this.state.controls[ctr].validation.length > 0) {
-                // then it didn't pass validation
-                isValid = false;
-            }
-        }
-        data.append('userId',this.props.userRedux.user._id);
-        data.append('phone',this.state.phone);
-        data.append('email',this.state.email);
-        data.append('placeId', this.props.locationRedux.selectedPlace.placeId);
-        data.append('formatted_address', this.props.locationRedux.selectedPlace.formatted_address);
-        data.append('name', this.props.locationRedux.selectedPlace.name);
-        // set up formdata for images
-        if (this.state.image1) {
-            data.append('image1', this.state.image1);
-            
-        }
-        if (this.state.image2) {
-            data.append('image2', this.state.image2);
-        }
+    handleSubmit = (e) => {
 
-        // if isValid stays true 
-        if (isValid) {
-            // make axios call
-            axios.post('/make-flyer', data)
-                .then(response => {
-                    // set FlyerMade
-                    this.props.onSetFlyerMade(true);
-                    // redirect to manage-home
-                    this.props.history.push('/manage/');
-                })
-                .catch(err => {
-                    // #TODO- Handle ReqErrors
-                    this.setState({reqErrors: 'Could Not Make Flyer.'})
-                })
-        }
     }
 
     render() {
@@ -203,7 +181,7 @@ class FlyerMaker extends Component {
         }
         return (
             <div className={classes.FlyerMaker}>
-                <h3>Make Your Flyer</h3>
+                <h3>Edit Your Flyer</h3>
                 <section>
                     {reqErrorsDisplay}
                     {errorDisplay}
@@ -213,7 +191,8 @@ class FlyerMaker extends Component {
                             <input type="text" 
                                 className="form-control"
                                 name="heading"
-                                onChange={this.inputChanged} />
+                                onChange={this.inputChanged}
+                                defaultValue={this.props.flyerRedux.selectedFlyer.heading} />
                         </div>
                         {this.state.imgErrors? <InfoMessage messageType="fail">{this.state.imgErrors}</InfoMessage>: null}                     
                         {this.state.imgNum > 0? <p>Num of Pics Uploaded: <br/> <span>{this.state.imgNum} / 2</span></p> : null}
@@ -232,16 +211,28 @@ class FlyerMaker extends Component {
                                 className='form-control'
                                 name="description" 
                                 onChange={this.inputChanged} 
-                                rows="8"></textarea>
+                                rows="8"
+                                defaultValue={this.props.flyerRedux.selectedFlyer.description}></textarea>
                         </div>
                         <div className='form-group'>
                             <label>Way to Contact You</label>
                             <div className='btn-group-sm'>
-                                <input type="checkbox" value="email" onClick={this.onEmail}/> Email &nbsp; &nbsp;
-                                <input type="checkbox" value="phone" onClick={this.onPhone}/> Phone                        
+                                <input 
+                                    type="checkbox" 
+                                    value="email" 
+                                    onClick={this.onEmail}
+                                    checked={this.props.flyerRedux.selectedFlyer.contact.email}
+                                /> Email 
+                                &nbsp; &nbsp;
+                                <input 
+                                    type="checkbox" 
+                                    value="phone" 
+                                    onClick={this.onPhone}
+                                    checked={this.props.flyerRedux.selectedFlyer.contact.phone}
+                                /> Phone                        
                             </div>
                         </div>
-                        <button className="btn btn-primary">MAKE FLYER</button>
+                        <button className="btn btn-primary">EDIT FLYER</button>
 
                     </form>
                 </section>
@@ -253,13 +244,8 @@ class FlyerMaker extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userRedux: state.userRedux,
-        locationRedux: state.locationRedux
+        flyerRedux: state.flyerRedux
     }
 }
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onSetFlyerMade: (bool) => dispatch(actions.setFlyerMade(bool))
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(FlyerMaker);
+
+export default connect(mapStateToProps)(FlyerEdit);

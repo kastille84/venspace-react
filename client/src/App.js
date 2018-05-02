@@ -12,7 +12,7 @@ import Signin from './components/Frontend/Signin/Signin';
 import ManageHome from './components/Manage/Home/Home';
 import FlyerMaker from './components/Flyer/FlyerMaker/FlyerMaker';
 import FlyerView from './components/Flyer/FlyerView/FlyerView';
-
+import FlyerEdit from './components/Flyer/FlyerEdit/FlyerEdit';
 
 class App extends Component {
 
@@ -22,6 +22,7 @@ class App extends Component {
       <Switch>
         <Route path="/manage/" exact component={ManageHome}  />
         <Route path='/manage/make-flyer' component={FlyerMaker} />
+        <Route path="/manage/flyer-edit" component={FlyerEdit} />
       </Switch>
     )
   }
