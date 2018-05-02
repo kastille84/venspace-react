@@ -39,10 +39,10 @@ class FlyerEdit extends Component {
         let phone = this.props.flyerRedux.selectedFlyer.contact.phone;
         let email = this.props.flyerRedux.selectedFlyer.contact.email;
 
-        this.setState({cotrols: controlsCopy});
+        this.setState({controls: controlsCopy});
         this.setState({imgNum : imgNumCopy});
         this.setState({image1: image1});
-        this.setState({image1: image1});
+        this.setState({image2: image2});
         this.setState({phone: phone});
         this.setState({email: email});
     }
@@ -220,15 +220,15 @@ class FlyerEdit extends Component {
                                 <input 
                                     type="checkbox" 
                                     value="email" 
-                                    onClick={this.onEmail}
-                                    checked={this.props.flyerRedux.selectedFlyer.contact.email}
+                                    onChange={this.onEmail}
+                                    checked={this.state.email}
                                 /> Email 
                                 &nbsp; &nbsp;
                                 <input 
                                     type="checkbox" 
                                     value="phone" 
-                                    onClick={this.onPhone}
-                                    checked={this.props.flyerRedux.selectedFlyer.contact.phone}
+                                    onChange={this.onPhone}
+                                    checked={this.state.phone}
                                 /> Phone                        
                             </div>
                         </div>
