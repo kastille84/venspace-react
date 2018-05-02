@@ -1,0 +1,19 @@
+.FlyerEdit {
+
+}
+
+.FlyerEdit section {
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    margin: 20px auto;
+    padding: 20px;
+    width: 500px;
+}
+
+.FlyerEdit .preview span{
+    display: inline-block
+}
+
+.FlyerEdit img {
+    width: 80px;
+}

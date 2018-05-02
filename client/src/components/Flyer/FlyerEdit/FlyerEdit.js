@@ -177,10 +177,10 @@ class FlyerEdit extends Component {
         // reqErrors
         let reqErrorsDisplay = null;
         if (this.state.reqErrors) {
-            reqErrorsDisplay = <InfoMessage messageType='fail'>Could No Register. Check Your Input.</InfoMessage>
+            reqErrorsDisplay = <InfoMessage messageType='fail'>Could No Edit Your Flyer. Check Your Input.</InfoMessage>
         }
         return (
-            <div className={classes.FlyerMaker}>
+            <div className={classes.FlyerEdit}>
                 <h3>Edit Your Flyer</h3>
                 <section>
                     {reqErrorsDisplay}
@@ -196,7 +196,27 @@ class FlyerEdit extends Component {
                         </div>
                         {this.state.imgErrors? <InfoMessage messageType="fail">{this.state.imgErrors}</InfoMessage>: null}                     
                         {this.state.imgNum > 0? <p>Num of Pics Uploaded: <br/> <span>{this.state.imgNum} / 2</span></p> : null}
-                        
+                        <div className="form-group preview">
+                            <label>Image Preview: </label><br/>
+                            {this.state.image1? (
+                                <span><img 
+                                    className="img-fluid img-thumbnail rounded" 
+                                    src={process.env.PUBLIC_URL + '/assets/images/flyers/'+this.state.image1} 
+                                    alt={this.state.image1} />
+                                    <br />
+                                    <button className="btn btn-danger">X</button>
+                                </span>
+                            ): null}
+                            {this.state.image2? (
+                                <span><img 
+                                    className="img-fluid img-thumbnail rounded" 
+                                    src={process.env.PUBLIC_URL + '/assets/images/flyers/'+this.state.image2} 
+                                    alt={this.state.image2} />
+                                    <br />
+                                    <button className="btn btn-danger">X</button>
+                                </span>
+                            ): null}
+                        </div>
                         <div className='form-group'>
                             <label>Image Upload</label>
                             <input type="file" 
@@ -204,7 +224,7 @@ class FlyerEdit extends Component {
                                 name="img"
                                 id="flyerImg"
                                 onChange={this.fileChanged} />
-                        </div>
+                        </div>                        
                         <div className='form-group'>
                             <label>Description</label>
                             <textarea 

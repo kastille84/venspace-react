@@ -199,7 +199,7 @@ class FlyerMaker extends Component {
         // reqErrors
         let reqErrorsDisplay = null;
         if (this.state.reqErrors) {
-            reqErrorsDisplay = <InfoMessage messageType='fail'>Could No Register. Check Your Input.</InfoMessage>
+            reqErrorsDisplay = <InfoMessage messageType='fail'>Could No Post Your Flyer. Check Your Input.</InfoMessage>
         }
         return (
             <div className={classes.FlyerMaker}>
