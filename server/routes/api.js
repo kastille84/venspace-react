@@ -337,7 +337,8 @@ router.patch('/edit-flyer', [
     
     Flyer.findById(req.body.flyerId).exec()
         .then(flyer => {
-            const imagesArr = [];
+            
+            let imagesArr = [];
 
             // no image files were deleted
             if (req.body.image1 && req.body.image2) {
@@ -348,7 +349,7 @@ router.patch('/edit-flyer', [
             else if (req.files.image1 && req.body.image2) {
                 
                 // logic for unlinking the image1 a file
-                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[0].name), (err) => {
+                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[0]), (err) => {
                     if (err) return res.status(500).json({message: 'Could not delete image'});
                 })
                 // logic for moving New Image1 file
@@ -359,13 +360,15 @@ router.patch('/edit-flyer', [
                     } 
                     imagesArr.push(img1Name)
                     imagesArr.push(req.body.image2);
+                    saveFlyer(req, res, imagesArr, flyer);
                 })
             }
             //Leaver image1-original & image2-new
             else if (req.body.image1 && req.files.image2) {
                 // logic for unlinking the image1 a file
-                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1].name), (err) => {
+                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1]), (err) => {
                     if (err) return res.status(500).json({message: 'Could not delete image'});
+                    
                 })
                 // logic for moving New Image2 file
                 const img2Name = formatFileName(img2Extra+req.files.image2.name);
@@ -373,16 +376,21 @@ router.patch('/edit-flyer', [
                     if (err) {
                         return res.status(500).json({message: 'Could Not mv file'});
                     } 
+                    console.log('got here');
                     imagesArr.push(req.body.image1)
                     imagesArr.push(img2Name);
+                    console.log('here after', imagesArr)
+                    // call the function when ready
+                    saveFlyer(req, res, imagesArr, flyer);
                 })
+                
             }
             // Delete Both, No New
             else if (!req.body.image1 && !req.body.image2) {
                 // unlink both files
-                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[0].name), (err) => {
+                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[0]), (err) => {
                     if(err) return res.status(500).json({message: 'Could not delete image'});
-                    fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1].name), (err) => {
+                    fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1]), (err) => {
                         if (err) return res.status(500).json({message: 'Could not delete image'});
                     })
                 })
@@ -390,9 +398,9 @@ router.patch('/edit-flyer', [
             // Delete Both, Add Image1, no image2
             else if (req.files.image1 && !req.files.image2 && !req.body.image1 && !req.body.image2) {
                 // unlink both files
-                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[0].name), (err) => {
+                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[0]), (err) => {
                     if(err) return res.status(500).json({message: 'Could not delete image'});
-                    fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1].name), (err) => {
+                    fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1]), (err) => {
                         if (err) return res.status(500).json({message: 'Could not delete image'});
                     })
                 })
@@ -409,9 +417,9 @@ router.patch('/edit-flyer', [
             // Delete Both, Add Image1 & Image 2
             else if (req.files.image1 && req.files.image2 && !req.body.image1 && !req.body.image2) {
                 // unlink both files
-                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[0].name), (err) => {
+                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[0]), (err) => {
                     if(err) return res.status(500).json({message: 'Could not delete image'});
-                    fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1].name), (err) => {
+                    fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1]), (err) => {
                         if (err) return res.status(500).json({message: 'Could not delete image'});
                     })
                 })
@@ -487,23 +495,30 @@ router.patch('/edit-flyer', [
             //         return res.status(200).json({message: 'flyer updated successfully'})
             //     }
             // );
-            flyer.heading = req.body.heading;
-            flyer.description = req.body.description;
-            flyer.contact = req.body.contact;
-            flyer.images = imagesArr;
-            flyer.save( (err => {
-                if (err) {
-                    return res.status(500).json({message: 'Could Not update Flyer'});
-                }
-                return res.status(200).json({message: 'flyer updated successfully'})
-            }));
-
-        }) 
-        .catch(err => {
-            return res.status(500).json({err: err});
-        });
+    }) 
+    .catch(err => {
+        return res.status(500).json({err: err});
+    });        
 });
+    function saveFlyer(req, res, imagesArr, flyer) {
+        const contactObj = {
+            phone: req.body.phone,
+            email: req.body.email
+        };
+        flyer.heading = req.body.heading;
+        flyer.description = req.body.description;
+        flyer.contact = contactObj;
+        flyer.images = imagesArr;
+        console.log('flyer.images',flyer.images);
+        flyer.save( (err => {
+            if (err) {
+                return res.status(500).json({message: 'Could Not update Flyer'});
+            }
+            return res.status(200).json({message: 'flyer updated successfully'})
+        }));
 
+    
+    }
 
 // router.get('/users', (req, res) => {
 //     // User.find()

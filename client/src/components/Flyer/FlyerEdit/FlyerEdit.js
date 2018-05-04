@@ -261,7 +261,7 @@ class FlyerEdit extends Component {
                         <div className="form-group preview">
                             { (this.state.imgNum > 0 && !this.state.originalImagesDeleted)? <div><label>Image Preview: </label></div>: null}
                             {(this.state.image1 
-                                && typeof this.state.image1 !== 'file'
+                                && typeof this.state.image1.name !== 'string'
                                 && !this.state.originalImagesDeleted)? (
                                 <span><img 
                                     className="img-fluid img-thumbnail rounded" 
@@ -272,7 +272,7 @@ class FlyerEdit extends Component {
                                 </span>
                             ): null}
                             {(this.state.image2 
-                                && typeof this.state.image2 !== 'file'
+                                && typeof this.state.image2.name !== 'string'
                                 && !this.state.originalImagesDeleted)? (
                                 <span><img 
                                     className="img-fluid img-thumbnail rounded" 
