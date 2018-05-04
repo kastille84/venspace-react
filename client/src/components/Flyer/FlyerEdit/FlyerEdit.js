@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import classes from './FlyerEdit.css';
 
 import InfoMessage from '../../UI/Message/InfoMessage';
@@ -19,6 +20,7 @@ class FlyerEdit extends Component {
         imgNum:0,        
         image1: null,
         image2: null,
+        originalImagesDeleted: false,
         imgErrors: false,
         phone: false,
         email: false,
@@ -136,6 +138,26 @@ class FlyerEdit extends Component {
             
         }
     }
+
+    imageDelete = (imageText) => {
+        if (this.state.image1 === imageText) {
+            this.setState({image1: null});
+            let imgCount = this.state.imgNum - 1;
+            if (imgCount === 0) {
+                this.setState({originalImagesDeleted: true});
+            }
+            this.setState({imgNum: imgCount});
+        } else if (this.state.image2 === imageText) {
+            this.setState({image2: null});
+            let imgCount = this.state.imgNum - 1;
+            if (imgCount === 0) {
+                this.setState({originalImagesDeleted: true});
+            }
+            this.setState({imgNum: imgCount});
+        }
+
+    }
+
     onEmail = (e) => {
         this.setState({email: !this.state.email});
     }
@@ -169,7 +191,47 @@ class FlyerEdit extends Component {
      }
 
     handleSubmit = (e) => {
+        e.preventDefault();
+        let isValid = true;
+        // create data to send to server
+            // && check whole form validity
+        const data = new FormData();
+        for(let ctr in this.state.controls) {
+            //data[ctr] = this.state.controls[ctr].value;
+            data.append(ctr, this.state.controls[ctr].value);
+            if (this.state.controls[ctr].validation.length > 0) {
+                // then it didn't pass validation
+                isValid = false;
+            }
+        }
+        data.append('flyerId',this.props.flyerRedux.selectedFlyer._id);
+        data.append('phone',this.state.phone);
+        data.append('email',this.state.email);
+        // set up formdata for images
+        if (this.state.image1) {
+            data.append('image1', this.state.image1);
+            
+        }
+        if (this.state.image2) {
+            data.append('image2', this.state.image2);
+        }
 
+        // if isValid stays true 
+        if (isValid) {
+            console.log('editData', data);
+            // make axios call
+            axios.patch('/edit-flyer', data)
+                .then(response => {
+                    // // set FlyerMade
+                    // this.props.onSetFlyerMade(true);
+                    // // redirect to manage-home
+                    // this.props.history.push('/manage/');
+                })
+                .catch(err => {
+                    // #TODO- Handle ReqErrors
+                    this.setState({reqErrors: 'Could Not Make Flyer.'})
+                })
+        }
     }
 
     render() {
@@ -197,23 +259,27 @@ class FlyerEdit extends Component {
                         {this.state.imgErrors? <InfoMessage messageType="fail">{this.state.imgErrors}</InfoMessage>: null}                     
                         {this.state.imgNum > 0? <p>Num of Pics Uploaded: <br/> <span>{this.state.imgNum} / 2</span></p> : null}
                         <div className="form-group preview">
-                            <label>Image Preview: </label><br/>
-                            {this.state.image1? (
+                            { (this.state.imgNum > 0 && !this.state.originalImagesDeleted)? <div><label>Image Preview: </label></div>: null}
+                            {(this.state.image1 
+                                && typeof this.state.image1 !== 'file'
+                                && !this.state.originalImagesDeleted)? (
                                 <span><img 
                                     className="img-fluid img-thumbnail rounded" 
                                     src={process.env.PUBLIC_URL + '/assets/images/flyers/'+this.state.image1} 
                                     alt={this.state.image1} />
                                     <br />
-                                    <button className="btn btn-danger">X</button>
+                                    <button className="btn btn-danger" onClick={() => this.imageDelete(this.state.image1)}>X</button>
                                 </span>
                             ): null}
-                            {this.state.image2? (
+                            {(this.state.image2 
+                                && typeof this.state.image2 !== 'file'
+                                && !this.state.originalImagesDeleted)? (
                                 <span><img 
                                     className="img-fluid img-thumbnail rounded" 
                                     src={process.env.PUBLIC_URL + '/assets/images/flyers/'+this.state.image2} 
                                     alt={this.state.image2} />
                                     <br />
-                                    <button className="btn btn-danger">X</button>
+                                    <button className="btn btn-danger" onClick={() => this.imageDelete(this.state.image2)}>X</button>
                                 </span>
                             ): null}
                         </div>
@@ -264,7 +330,8 @@ class FlyerEdit extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        flyerRedux: state.flyerRedux
+        flyerRedux: state.flyerRedux,
+        userRedux: state.userRedux
     }
 }
 
