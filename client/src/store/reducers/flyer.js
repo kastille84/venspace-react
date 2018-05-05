@@ -23,6 +23,18 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 selectedFlyer: action.flyer
             };
+        case actionTypes.SET_NEW_FLYER:
+            let flyersCopy = [...state.flyers];
+            let newFlyersArr = flyersCopy.map(flyer => {
+                if (flyer._id === action.newFlyer._id) {
+                    return action.newFlyer;
+                }
+                return flyer;
+            });
+            return {
+                ...state,
+                flyers: newFlyersArr
+            };
         default:
             return state;
     }

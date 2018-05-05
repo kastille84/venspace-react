@@ -20,3 +20,10 @@ export const setSelectedFlyer = (flyer) => {
         flyer: flyer
     }
 }
+
+export const setNewFlyer = (newFlyer) => {
+    return {
+        type: actionTypes.SET_NEW_FLYER,
+        newFlyer: newFlyer
+    }
+}

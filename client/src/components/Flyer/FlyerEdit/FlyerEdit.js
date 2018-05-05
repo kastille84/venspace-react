@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import * as actions from '../../../store/actions/index';
 import classes from './FlyerEdit.css';
 
 import InfoMessage from '../../UI/Message/InfoMessage';
@@ -222,10 +223,16 @@ class FlyerEdit extends Component {
             // make axios call
             axios.patch('/edit-flyer', data)
                 .then(response => {
-                    // // set FlyerMade
-                    // this.props.onSetFlyerMade(true);
-                    // // redirect to manage-home
-                    // this.props.history.push('/manage/');
+                    console.log(response.data);
+                    // set selected flyer
+                    let newFlyer = response.data.newFlyer;
+                    newFlyer.user = this.props.userRedux.user;
+                    this.props.onSetSelectedFlyer(newFlyer);
+                    // set newflyer in flyers Array
+                    this.props.onSetNewFlyer(newFlyer);
+                    setTimeout(() => {
+                        this.props.history.push('/view-flyer/'+newFlyer._id);
+                    }, 600);
                 })
                 .catch(err => {
                     // #TODO- Handle ReqErrors
@@ -335,4 +342,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(FlyerEdit);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSetSelectedFlyer: (flyer) => dispatch(actions.setSelectedFlyer(flyer)),
+        onSetNewFlyer: (newFlyer) => dispatch(actions.setNewFlyer(newFlyer))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FlyerEdit);
