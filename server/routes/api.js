@@ -311,7 +311,6 @@ router.patch('/edit-flyer', [
     console.log('files', req.files);
     const img1Extra = randomString({length: 5});
     const img2Extra = randomString({length: 5});
-
     // if (req.files) {
     //     if (req.files.image1) {
     //         const img1= req.files.image1;
@@ -339,9 +338,21 @@ router.patch('/edit-flyer', [
         .then(flyer => {
             
             let imagesArr = [];
-
+            // Delete Both, No New
+            if (!req.body['image1'] && !req.body['image2'] && req.files === null) {
+                
+                // unlink both files
+                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[0]), (err) => {
+                    if(err) return res.status(500).json({message: 'Could not delete image'});
+                    fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1]), (err) => {
+                        if (err) return res.status(500).json({message: 'Could not delete image'});
+                        
+                        saveFlyer(req, res, imagesArr, flyer);
+                    })
+                })
+            }
             // no image files were deleted
-            if (req.body.image1 && req.body.image2) {
+             else if (req.body.image1 && req.body.image2) {
                 imagesArr.push(req.body.image1);
                 imagesArr.push(req.body.image2);
             }
@@ -376,72 +387,65 @@ router.patch('/edit-flyer', [
                     if (err) {
                         return res.status(500).json({message: 'Could Not mv file'});
                     } 
-                    console.log('got here');
                     imagesArr.push(req.body.image1)
                     imagesArr.push(img2Name);
-                    console.log('here after', imagesArr)
                     // call the function when ready
                     saveFlyer(req, res, imagesArr, flyer);
                 })
                 
-            }
-            // Delete Both, No New
-            else if (!req.body.image1 && !req.body.image2) {
-                // unlink both files
-                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[0]), (err) => {
-                    if(err) return res.status(500).json({message: 'Could not delete image'});
-                    fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1]), (err) => {
-                        if (err) return res.status(500).json({message: 'Could not delete image'});
-                    })
-                })
-            }
+            }            
             // Delete Both, Add Image1, no image2
-            else if (req.files.image1 && !req.files.image2 && !req.body.image1 && !req.body.image2) {
+            else if (req.files.image1 && !req.files.image2 && !req.body['image1'] && !req.body['image2']) {
+                
                 // unlink both files
                 fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[0]), (err) => {
                     if(err) return res.status(500).json({message: 'Could not delete image'});
                     fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1]), (err) => {
                         if (err) return res.status(500).json({message: 'Could not delete image'});
-                    })
-                })
-
-                // logic for moving New Image1 file
-                const img1Name = formatFileName(img1Extra+req.files.image1.name);
-                req.files.image1.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img1Name), (err) => {
-                    if (err) {
-                        return res.status(500).json({message: 'Could Not mv file'});
-                    } 
-                    imagesArr.push(img1Name)
-                })                
+                        // logic for moving New Image1 file
+                        const img1Name = formatFileName(img1Extra+req.files.image1.name);
+                        req.files.image1.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img1Name), (err) => {
+                            if (err) {
+                                return res.status(500).json({message: 'Could Not mv file'});
+                            } 
+                            imagesArr.push(img1Name);
+                            saveFlyer(req, res, imagesArr, flyer);
+                        });  
+                    });
+                });
+                              
             }
             // Delete Both, Add Image1 & Image 2
-            else if (req.files.image1 && req.files.image2 && !req.body.image1 && !req.body.image2) {
+            else if (req.files.image1 && req.files.image2) {
+                console.log('got here');
                 // unlink both files
                 fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[0]), (err) => {
                     if(err) return res.status(500).json({message: 'Could not delete image'});
                     fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1]), (err) => {
                         if (err) return res.status(500).json({message: 'Could not delete image'});
-                    })
-                })
+                        // logic for moving New Image1 file
+                        const img1Name = formatFileName(img1Extra+req.files.image1.name);
+                        req.files.image1.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img1Name), (err) => {
+                            if (err) {
+                                return res.status(500).json({message: 'Could Not mv file'});
+                            } 
+                            
+                            // logic for moving New Image2 file
+                            const img2Name = formatFileName(img2Extra+req.files.image2.name);
+                            req.files.image2.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img2Name), (err) => {
+                                if (err) {
+                                    return res.status(500).json({message: 'Could Not mv file'});
+                                } 
+                                imagesArr.push(img1Name);
+                                imagesArr.push(img2Name);
 
-                // logic for moving New Image1 file
-                const img1Name = formatFileName(img1Extra+req.files.image1.name);
-                req.files.image1.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img1Name), (err) => {
-                    if (err) {
-                        return res.status(500).json({message: 'Could Not mv file'});
-                    } 
-                    
-                    // logic for moving New Image2 file
-                    const img2Name = formatFileName(img2Extra+req.files.image2.name);
-                    req.files.image2.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img2Name), (err) => {
-                        if (err) {
-                            return res.status(500).json({message: 'Could Not mv file'});
-                        } 
-                        imagesArr.push(img1Name)
-                        imagesArr.push(img2Name)
-                    }) 
-                }) 
-                
+                                saveFlyer(req, res, imagesArr, flyer);
+                            });
+                        });
+                    });
+                });
+
+                 
             }
 
 
