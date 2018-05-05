@@ -479,25 +479,88 @@ router.patch('/edit-flyer', [
         return res.status(500).json({err: err});
     });        
 });
-    function saveFlyer(req, res, imagesArr, flyer) {
-        const contactObj = {
-            phone: req.body.phone,
-            email: req.body.email
-        };
-        flyer.heading = req.body.heading;
-        flyer.description = req.body.description;
-        flyer.contact = contactObj;
-        flyer.images = imagesArr;
-        console.log('flyer.images',flyer.images);
-        flyer.save( (err, newFlyer) => {
-            if (err) {
-                return res.status(500).json({message: 'Could Not update Flyer'});
-            }
-            return res.status(200).json({message: 'flyer updated successfully', newFlyer: newFlyer})
-        });
 
-    
-    }
+router.delete('/delete-flyer/:_id', (req, res) => {
+    const id = req.params['_id'];
+
+    Flyer.findByIdAndRemove(id, (err, deletedFlyer) => {
+        if (err) {
+            return res.status(500).json({message: 'Could Not Remove'});
+        }
+        if (deletedFlyer) {
+            // Delete any stored images 
+            if (deletedFlyer.images.length === 2) {
+                // unlink both files
+                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", deletedFlyer.images[0]), (err) => {
+                    if(err) return res.status(500).json({message: 'Could not delete image'});
+                    
+                    fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1]), (err) => {
+                        if (err) return res.status(500).json({message: 'Could not delete image'});
+                        
+                    });
+                });
+            } else if (deletedFlyer.images.length === 1) {
+                // unlink iamge1 files
+                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", deletedFlyer.images[0]), (err) => {
+                    if(err) return res.status(500).json({message: 'Could not delete image'});
+                });
+            }
+
+            // delete from user
+            User.findById(deletedFlyer.user, (err, user) => {
+                if (err) {
+                    return res.status(500).json({message: 'Could Not Remove from user'});
+                }
+                if (user) {
+                    let flyersArr = user.flyers.filter(flyer => {
+                        if (flyer === deletedFlyer._id) {
+                            return false;
+                        }
+                        return true;
+                    });
+
+                    user.flyers = flyersArr;
+                    user.save( (err, newUser) => {
+                        if (err) {
+                            return res.status(500).json({message: 'could not save user'});
+                        }
+                        return res.status(200).json({message: 'success'});
+                    });
+
+                } else {
+                    // no user
+                    return res.status(500).json({message: 'Could Not Find User to Remove its flyer'});
+                }
+            })
+
+        } else {
+            // could not find flyer
+            return res.status(500).json({message: 'Could Not Find Flyer to Remove'});
+        }
+    });
+});
+
+
+
+function saveFlyer(req, res, imagesArr, flyer) {
+    const contactObj = {
+        phone: req.body.phone,
+        email: req.body.email
+    };
+    flyer.heading = req.body.heading;
+    flyer.description = req.body.description;
+    flyer.contact = contactObj;
+    flyer.images = imagesArr;
+    console.log('flyer.images',flyer.images);
+    flyer.save( (err, newFlyer) => {
+        if (err) {
+            return res.status(500).json({message: 'Could Not update Flyer'});
+        }
+        return res.status(200).json({message: 'flyer updated successfully', newFlyer: newFlyer})
+    });
+
+
+}
 
 // router.get('/users', (req, res) => {
 //     // User.find()

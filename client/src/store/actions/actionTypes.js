@@ -12,3 +12,5 @@ export const SET_FLYER_MADE = 'SET_FLYER_MADE';
 export const SET_FLYERS = 'SET_FLYERS';
 export const SET_SELECTED_FLYER = 'SET_SELECTED_FLYER';
 export const SET_NEW_FLYER = 'SET_NEW_FLYER';
+export const REMOVE_FLYER = 'REMOVE_FLYER';
+export const SET_DELETED_FLYER = 'SET_DELETED_FLYER';

@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import  classes  from './FlyerView.css';
+import * as actions from '../../../store/actions/index';
 
 class FlyerView extends Component {
     state = {
-        selectedImageSrc: null
+        selectedImageSrc: null,
+        editMode: false
     }
     componentWillMount() {
         //check selectedFlyer is null, redirect back to home
@@ -27,6 +30,10 @@ class FlyerView extends Component {
 
     onEditHandler = (e) => {
         this.props.history.push('/manage/flyer-edit');
+    }
+
+    handleDeleteClick = () => {
+        this.setState({editMode: !this.state.editMode});
     }
 
     getPictures = () => {
@@ -69,11 +76,42 @@ class FlyerView extends Component {
                             className='btn btn-info'
                             onClick={this.onEditHandler} >Edit</button>
                         &nbsp;
-                        <button className='btn btn-danger'>&nbsp; X &nbsp;</button>
+                        {!this.state.editMode? 
+                            <button className='btn btn-danger' onClick={this.handleDeleteClick}>&nbsp; X &nbsp;</button>
+                            :
+                            <button 
+                                className='btn btn-danger' 
+                                onClick={this.handleDelete}
+                                onBlur={this.handleDeleteClick}
+                                tabIndex='3'
+                                >DELETE</button>
+
+                        }
                     </section>
                 )
             }
         }
+    }
+
+    handleDelete = () => {
+        axios.delete('/delete-flyer/'+this.props.flyerRedux.selectedFlyer._id)
+            .then(response => {
+                console.log(response);
+                //remove selectedflyer from  flyers 
+                this.props.onRemoveFlyer(this.props.flyerRedux.selectedFlyer._id);
+                // selectedflyer to null
+                this.props.onSetSelectedFlyer(null);
+                
+                // flyer deleted
+                this.props.onSetFlyerDeleted(true);
+
+                // redirect to manage
+                this.props.history.push('/manage/');
+
+            })
+            .catch(err => {
+
+            })
     }
 
     render() {
@@ -122,4 +160,12 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(FlyerView);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSetSelectedFlyer: () => dispatch(actions.setSelectedFlyer(null)),
+        onRemoveFlyer: (flyerId) => dispatch(actions.removeFlyer(flyerId)),
+        onSetFlyerDeleted: (bool) => dispatch(actions.setDeletedFlyer(bool))
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FlyerView);

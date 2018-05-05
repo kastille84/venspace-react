@@ -15,5 +15,7 @@ export {
     setFlyerMade,
     setFlyers,
     setSelectedFlyer,
-    setNewFlyer
+    setNewFlyer,
+    removeFlyer,
+    setDeletedFlyer
 } from './flyer';

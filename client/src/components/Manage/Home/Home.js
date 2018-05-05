@@ -12,6 +12,11 @@ class Home extends Component {
                 this.props.onSetFlyerMade(false);
             }, 5000);
         }
+        if (this.props.flyerRedux.deletedFlyer) {
+            setTimeout(() => {
+                this.props.onSetFlyerDeleted(false);
+            }, 5000);
+        }
     }
 
     render() {
@@ -20,6 +25,7 @@ class Home extends Component {
                 <h3>Manage Your Flyers</h3>
                 <p>Stats go here</p>
                 {this.props.flyerRedux.flyerMade? <InfoMessage messageType="info">Your Flyer was Posted!</InfoMessage>: null}
+                {this.props.flyerRedux.deletedFlyer? <InfoMessage messageType="info">Your Flyer was Deleted</InfoMessage>: null}
                 <FlyerListWrapper mode='backend'></FlyerListWrapper>
             </div>
         )
@@ -33,7 +39,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) =>{
     return {
-        onSetFlyerMade: (bool) => dispatch(actions.setFlyerMade(bool))
+        onSetFlyerMade: (bool) => dispatch(actions.setFlyerMade(bool)),
+        onSetFlyerDeleted: (bool) => dispatch(actions.setDeletedFlyer(bool))
     }
 }
 

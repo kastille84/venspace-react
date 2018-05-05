@@ -3,7 +3,8 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     flyerMade: false,
     flyers: [],
-    selectedFlyer: null
+    selectedFlyer: null,
+    deletedFlyer: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -34,6 +35,23 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 flyers: newFlyersArr
+            };
+        case actionTypes.REMOVE_FLYER:
+            let flyersC = [...state.flyers];
+            let newFlyersA = flyersC.filter(flyer => {
+                if (flyer._id === action.flyerId) {
+                    return false
+                }
+                return true;
+            });
+            return {
+                ...state,
+                flyers: newFlyersA
+            };
+        case actionTypes.SET_DELETED_FLYER:
+            return {
+                ...state,
+                deletedFlyer: action.bool
             };
         default:
             return state;

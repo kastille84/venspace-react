@@ -27,3 +27,17 @@ export const setNewFlyer = (newFlyer) => {
         newFlyer: newFlyer
     }
 }
+
+export const removeFlyer = (flyerId) => {
+    return {
+        type: actionTypes.REMOVE_FLYER,
+        flyerId: flyerId
+    }
+}
+
+export const setDeletedFlyer = (bool) => {
+    return {
+        type: actionTypes.SET_DELETED_FLYER,
+        bool: bool
+    }
+}
