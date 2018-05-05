@@ -23,7 +23,6 @@ class Home extends Component {
         return (
             <div className={classes.Home}>
                 <h3>Manage Your Flyers</h3>
-                <p>Stats go here</p>
                 {this.props.flyerRedux.flyerMade? <InfoMessage messageType="info">Your Flyer was Posted!</InfoMessage>: null}
                 {this.props.flyerRedux.deletedFlyer? <InfoMessage messageType="info">Your Flyer was Deleted</InfoMessage>: null}
                 <FlyerListWrapper mode='backend'></FlyerListWrapper>

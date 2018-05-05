@@ -1,4 +1,5 @@
 .FlyerView {
+    background-color: #f4f4f4;
     border: 1px solid #ccc;
     box-shadow: 2px 2px 2px #aaa;
     margin: 80px auto;    
@@ -6,9 +7,12 @@
     width: 80%;    
 }
 
+.FlyerView h2 {
+    margin: 30px auto;
+}
 .pictures {
     width: 80%;
-    margin: auto;
+    margin: 30px auto;
 }
 .pictures img {
     width: 80px;
@@ -20,6 +24,7 @@
 }
 
 .description {
-    width: 80%;
-    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    white-space: pre;
 }

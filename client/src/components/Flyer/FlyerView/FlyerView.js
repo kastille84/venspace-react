@@ -114,6 +114,13 @@ class FlyerView extends Component {
             })
     }
 
+
+    decodeHtml = (html) => {
+        var txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    }
+
     render() {
         if(!this.props.flyerRedux.selectedFlyer){
              return (
@@ -123,6 +130,7 @@ class FlyerView extends Component {
             return (
                 <div className={classes.FlyerView}>
                     <h2>{this.props.flyerRedux.selectedFlyer.heading}</h2>
+                    <small>posted at {this.props.locationRedux.selectedPlace.formatted_address}</small>
                     <section className={classes.pictures}>
                         {this.getPictures()}                    
                     </section>
@@ -136,8 +144,9 @@ class FlyerView extends Component {
                         : null
                         }
                     </div>
-                    <section className={classes.description}>
-                        {this.props.flyerRedux.selectedFlyer.description}
+                    <hr />
+                    <section className={classes.description} >
+                        {this.decodeHtml(this.props.flyerRedux.selectedFlyer.description)}
                     </section>
                     <hr />
                     <section className={classes.contact}>
@@ -156,7 +165,8 @@ class FlyerView extends Component {
 const mapStateToProps = (state) => {
     return {
         flyerRedux: state.flyerRedux,
-        userRedux: state.userRedux
+        userRedux: state.userRedux,
+        locationRedux: state.locationRedux
     }
 }
 
