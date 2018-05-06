@@ -1,11 +1,33 @@
 .Signin {
-    
+    width: 80%;
+    margin: auto;
 }
 
 .Signin section {
-    background-color: #fcfcfc;
+    background-color: #f8f9fa;
     border: 1px solid #ccc;
     margin: 20px auto;
     padding: 20px;
-    width: 500px;
+}
+
+/* TABLET && LARGE SMARTPHONES*/
+@media screen and (min-width: 481px ) and (max-width: 768px) {
+    .Signin {
+        width:50%;
+    }
+}
+/* LAPTOPS && TABLET in Landscape */
+@media screen and (min-width: 769px ) and (max-width: 1024px) {
+    .Signin {
+        width:40%;
+    }
+    
+}
+/* LARGE DESKTOPS */
+@media screen and (min-width: 1025px ) and (max-width: 1600px) {
+    .Signin {
+        width:30%;
+    }
+    
+
 }

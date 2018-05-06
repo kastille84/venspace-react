@@ -7,7 +7,7 @@
     height: 75px;
     margin-bottom: 70px;
     padding: 20px;
-
+    
 }
 .logo:hover {
     cursor: pointer;
@@ -23,4 +23,22 @@
 }
 .Navigation a {
     color: white;
+}
+
+/* TABLET && LARGE SMARTPHONES */
+@media screen and (min-width: 481px ) and (max-width: 768px) {
+    .Navigation {
+        font-size: 1.2rem;
+    }
+}
+/* LAPTOPS && TABLET in Landscape */
+@media screen and (min-width: 769px ) and (max-width: 1024px) {
+
+}
+/* LARGE DESKTOPS */
+@media screen and (min-width: 1025px ) and (max-width: 1600px) {
+    .Navigation {
+        font-size: 1.4rem;
+    }
+
 }

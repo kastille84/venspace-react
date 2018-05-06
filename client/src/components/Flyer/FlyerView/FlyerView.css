@@ -2,9 +2,9 @@
     background-color: #f4f4f4;
     border: 1px solid #ccc;
     box-shadow: 2px 2px 2px #aaa;
-    margin: 80px auto;    
+    margin: auto;    
     padding: 20px;
-    width: 80%;    
+    width: 90%;    
 }
 
 .FlyerView h2 {
@@ -15,7 +15,10 @@
     margin: 30px auto;
 }
 .pictures img {
-    width: 80px;
+    width: 100px;
+}
+.pictures img:hover {
+    cursor: pointer;
 }
 
 .displayPicture {
@@ -26,5 +29,96 @@
 .description {
     margin-top: 40px;
     margin-bottom: 40px;
-    white-space: pre;
+    text-align: left;
+    white-space: pre-wrap;
 }
+
+/* TABLET && LARGE SMARTPHONES */
+@media screen and (min-width: 481px ) and (max-width: 768px) {
+    .FlyerView {
+        margin: 80px auto;    
+        padding: 20px;
+        width: 80%;    
+    }
+    
+    .FlyerView h2 {
+        margin: 30px auto;
+    }
+    .pictures {
+        width: 80%;
+        margin: 30px auto;
+    }
+    .pictures img {
+        width: 100px;
+    }
+    .pictures img:hover {
+        cursor: pointer;
+    }
+    
+    .displayPicture {
+        width: 80%;
+        margin: auto;
+    }
+    
+    .description {
+        margin-top: 40px;
+        margin-bottom: 40px;
+        text-align: left;
+        white-space: pre-wrap;
+    }
+}
+/* LAPTOPS && TABLET in Landscape */
+@media screen and (min-width: 769px ) and (max-width: 1024px) {
+    .FlyerView {
+        margin: 80px auto;    
+        padding: 20px;
+        width: 80%;    
+    }
+    
+    .FlyerView h2 {
+        margin: 30px auto;
+    }
+    .pictures {
+        width: 80%;
+        margin: 30px auto;
+    }
+    .pictures img {
+        width: 100px;
+    }
+    .pictures img:hover {
+        cursor: pointer;
+    }
+    
+    .displayPicture {
+        width: 80%;
+        margin: auto;
+    }
+    
+    .description {
+        margin-top: 40px;
+        margin-bottom: 40px;
+        text-align: left;
+        white-space: pre-wrap;
+    }
+
+}
+/* LARGE DESKTOPS */
+@media screen and (min-width: 1025px ) and (max-width: 1600px) {
+    
+
+}
+
+
+/* TABLET && LARGE SMARTPHONES
+@media screen and (min-width: 481px ) and (max-width: 768px) {
+
+}
+/* LAPTOPS && TABLET in Landscape */
+/* @media screen and (min-width: 769px ) and (max-width: 1024px) {
+
+} */
+/* LARGE DESKTOPS */
+/* @media screen and (min-width: 1025px ) and (max-width: 1600px) {
+    
+
+} */
