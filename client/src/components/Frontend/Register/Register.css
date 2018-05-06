@@ -1,12 +1,33 @@
 .Register {
-    
+    width: 80%;
+    margin: auto;
 }
 
 .Register section {
-    background-color: #fcfcfc;
+    background-color: #f8f9fa;
     border: 1px solid #ccc;
     margin: 20px auto;
     padding: 20px;
-    width: 500px;
+}
+
+/* TABLET && LARGE SMARTPHONES*/
+@media screen and (min-width: 481px ) and (max-width: 768px) {
+    .Register {
+        width:50%;
+    }
+}
+/* LAPTOPS && TABLET in Landscape */
+@media screen and (min-width: 769px ) and (max-width: 1024px) {
+    .Register {
+        width:40%;
+    }
+    
+}
+/* LARGE DESKTOPS */
+@media screen and (min-width: 1025px ) and (max-width: 1600px) {
+    .Register {
+        width:30%;
+    }
+    
 
 }

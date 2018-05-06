@@ -11,6 +11,7 @@ import {
 import  SearchBox from "react-google-maps/lib/components/places/SearchBox";
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
+import classes from './Map.css';
 
 const MapWithASearchBox = compose(
   withProps({
@@ -89,6 +90,7 @@ const MapWithASearchBox = compose(
     defaultZoom={12}
     center={props.center}
     onBoundsChanged={props.onBoundsChanged}
+    className={classes.Map}
   >
     <SearchBox
       ref={props.onSearchBoxMounted}
@@ -98,20 +100,8 @@ const MapWithASearchBox = compose(
     >
       <input
         type="text"
-        placeholder="Where Do You Want To Place a Flyer?"
-        style={{
-          boxSizing: `border-box`,
-          border: `1px solid transparent`,
-          width: `340px`,
-          height: `50px`,
-          marginTop: `27px`,
-          padding: `0 12px`,
-          borderRadius: `3px`,
-          boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-          fontSize: `18px`,
-          outline: `none`,
-          textOverflow: `ellipses`,
-        }}
+        placeholder="Search Flyer By Location"
+        className={classes.Input}
       />
     </SearchBox>
     {props.markers.map((marker, index) =>
