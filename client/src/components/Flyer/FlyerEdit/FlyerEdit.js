@@ -267,28 +267,30 @@ class FlyerEdit extends Component {
                         {this.state.imgNum > 0? <p>Num of Pics Uploaded: <br/> <span>{this.state.imgNum} / 2</span></p> : null}
                         <div className="form-group preview">
                             { (this.state.imgNum > 0 && !this.state.originalImagesDeleted)? <div><label>Image Preview: </label></div>: null}
-                            {(this.state.image1 
-                                && typeof this.state.image1.name !== 'string'
-                                && !this.state.originalImagesDeleted)? (
-                                <span><img 
-                                    className="img-fluid img-thumbnail rounded" 
-                                    src={process.env.PUBLIC_URL + '/assets/images/flyers/'+this.state.image1} 
-                                    alt={this.state.image1} />
-                                    <br />
-                                    <button className="btn btn-danger" onClick={() => this.imageDelete(this.state.image1)}>X</button>
-                                </span>
-                            ): null}
-                            {(this.state.image2 
-                                && typeof this.state.image2.name !== 'string'
-                                && !this.state.originalImagesDeleted)? (
-                                <span><img 
-                                    className="img-fluid img-thumbnail rounded" 
-                                    src={process.env.PUBLIC_URL + '/assets/images/flyers/'+this.state.image2} 
-                                    alt={this.state.image2} />
-                                    <br />
-                                    <button className="btn btn-danger" onClick={() => this.imageDelete(this.state.image2)}>X</button>
-                                </span>
-                            ): null}
+                            <div className={classes.previewSpan}>
+                                {(this.state.image1 
+                                    && typeof this.state.image1.name !== 'string'
+                                    && !this.state.originalImagesDeleted)? (
+                                    <span><img 
+                                        className="img-fluid img-thumbnail rounded" 
+                                        src={process.env.PUBLIC_URL + '/assets/images/flyers/'+this.state.image1} 
+                                        alt={this.state.image1} />
+                                        <br />
+                                        <button className="btn btn-danger" onClick={() => this.imageDelete(this.state.image1)}>X</button>
+                                    </span>
+                                ): null}
+                                {(this.state.image2 
+                                    && typeof this.state.image2.name !== 'string'
+                                    && !this.state.originalImagesDeleted)? (
+                                    <span><img 
+                                        className="img-fluid img-thumbnail rounded" 
+                                        src={process.env.PUBLIC_URL + '/assets/images/flyers/'+this.state.image2} 
+                                        alt={this.state.image2} />
+                                        <br />
+                                        <button className="btn btn-danger" onClick={() => this.imageDelete(this.state.image2)}>X</button>
+                                    </span>
+                                ): null}
+                            </div>
                         </div>
                         <div className='form-group'>
                             <label>Image Upload</label>

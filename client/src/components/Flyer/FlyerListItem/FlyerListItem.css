@@ -1,2 +1,5 @@
 .FlyerListItem {
 }
+.FlyerListItem:hover {
+    cursor: pointer;
+}

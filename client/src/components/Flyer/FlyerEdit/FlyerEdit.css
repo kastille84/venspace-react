@@ -7,27 +7,36 @@
     border: 1px solid #ccc;
     margin: 20px auto;
     padding: 20px;
-    width: 500px;
+    width: 90%;
 }
 
-.FlyerEdit .preview span{
-    display: inline-block
-}
 
 .FlyerEdit img {
     width: 80px;
 }
 
+.previewSpan {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
 /* TABLET && LARGE SMARTPHONES */
 @media screen and (min-width: 481px ) and (max-width: 768px) {
+    .FlyerEdit section {
+        width: 80%;
+    }    
 
 }
 /* LAPTOPS && TABLET in Landscape */
 @media screen and (min-width: 769px ) and (max-width: 1024px) {
-
+    .FlyerEdit section {
+        width: 50%;
+    } 
 }
 /* LARGE DESKTOPS */
 @media screen and (min-width: 1025px ) and (max-width: 1600px) {
-    
+    .FlyerEdit section {
+        width: 50%;
+    } 
 
 }
