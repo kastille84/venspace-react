@@ -4,11 +4,28 @@
 
 .MapContainer {   
     margin: 20px auto;
-    width: 80%;
+    width: 90%;
 }
 
 .BtnControls {
     display: inline-block;
     margin-bottom: 20px;
+}
+
+/* TABLET && LARGE SMARTPHONES */
+@media screen and (min-width: 481px ) and (max-width: 768px) {
+    .MapContainer {
+        margin: 20px auto;
+        width: 80%;
+    }
+}
+/* LAPTOPS && TABLET in Landscape */
+@media screen and (min-width: 769px ) and (max-width: 1024px) {
+
+}
+/* LARGE DESKTOPS */
+@media screen and (min-width: 1025px ) and (max-width: 1600px) {
+    
+
 }
 

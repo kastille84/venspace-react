@@ -116,7 +116,7 @@ router.get('/flyers-by-location/:placeId', (req, res) => {
         .then(place => {
             if (place) {
                 console.log('place', place);
-                Flyer.find({place_id: place._id}).populate('user').exec()
+                Flyer.find({place_id: place._id}).populate([{path: 'user'}, {path: 'place_id'}]).exec()
                 .then(flyers => {
                     if (flyers) {
                         return res.status(200).json({flyers: flyers});
@@ -139,7 +139,7 @@ router.get('/flyers-by-location/:placeId', (req, res) => {
 router.get('/flyers-by-user/:userId', (req, res) =>{
     const userId = req.params['userId'];
 
-    Flyer.find({user: userId}).populate('user').exec()
+    Flyer.find({user: userId}).populate([{path: 'user'}, {path: 'place_id'}]).exec()
         .then(flyers => {
                 return res.status(200).json({flyers: flyers});            
         })

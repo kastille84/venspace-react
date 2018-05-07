@@ -43,7 +43,10 @@ class Home extends Component {
             <div className={classes.Home}>
                 <div className={classes.MapContainer}>
                     <span className={classes.BtnControls}>
-                        <button onClick={this.showMapToggle}>{this.state.showMap? 'Hide': 'View'} Map</button>
+                        <button 
+                            onClick={this.showMapToggle}
+                            className='btn btn-info'
+                            >{this.state.showMap? 'Hide': 'View'} Map</button>
                     </span>
                     {this.props.locationRedux.validPlace === false? <InfoMessage messageType="fail">Your search is too broad. Please search a business location or address.</InfoMessage>: null}
                     {this.state.ipWasSet && this.state.showMap? <MapWithASearchBox /> : null}
@@ -51,6 +54,11 @@ class Home extends Component {
                 <div className={classes.MapContainer}>
                     <FlyerListWrapper mode='frontend'></FlyerListWrapper>
                 </div>
+                {(this.props.flyerRedux.flyers.length === 0 )?
+                    <p>Please Search A Business Location for Flyers.<br/> Be as specific as possible by using name of business and optionally the address</p>
+                    :
+                    null
+                }
             </div>
         )
     }
@@ -58,7 +66,8 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        locationRedux: state.locationRedux
+        locationRedux: state.locationRedux,
+        flyerRedux: state.flyerRedux
     }
 }
 

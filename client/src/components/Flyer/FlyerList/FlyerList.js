@@ -15,24 +15,24 @@ class FlyerList extends Component {
     render() {
         
         return (
-            <div>FlyerList
+            <div>
                 
-                <ul className="list-group">
+                <ul className="list-group ">
                     {this.props.flyerRedux.flyers.map(flyer => {
                         const link = '/view-flyer/'+flyer._id;
-                        if (this.props.userRedux.user !== null && flyer.user._id === this.props.userRedux.user._id) {
+                        // if (this.props.userRedux.user !== null && flyer.user._id === this.props.userRedux.user._id) {
+                        //     return (
+                        //         <li className="list-group-item" key={flyer._id} onClick={() => this.selectFlyerHandler(flyer, link)}>                                    
+                        //                 <span className="far fa-user"></span>
+                        //                 <FlyerListItem flyer={flyer} ></FlyerListItem>                                    
+                        //         </li>);
+                        // } else {
                             return (
-                                <li className="list-group-item" key={flyer._id} onClick={() => this.selectFlyerHandler(flyer, link)}>                                    
-                                        <span className="far fa-user"></span>
-                                        <FlyerListItem flyer={flyer} ></FlyerListItem>                                    
-                                </li>);
-                        } else {
-                            return (
-                                <li className="list-group-item" key={flyer._id} onClick={() => this.selectFlyerHandler(flyer, link)}>
+                                <li className="list-group-item rounded-top" key={flyer._id} onClick={() => this.selectFlyerHandler(flyer, link)}>
                                         <FlyerListItem flyer={flyer} ></FlyerListItem>
                                     
                                 </li>);
-                        }
+                        //}
                     })}
                    
                 </ul>

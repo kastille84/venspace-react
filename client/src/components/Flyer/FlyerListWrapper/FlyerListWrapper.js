@@ -15,7 +15,6 @@ class FlyerListWrapper extends Component {
             console.log('whoa')
             axios.get(`flyers-by-user/${this.props.userRedux.user._id}`)
                 .then(response => {
-                    console.log('im here')
                     this.props.onSetFlyers(response.data.flyers);
                 }) 
                 .catch(err=> {
@@ -65,8 +64,7 @@ class FlyerListWrapper extends Component {
                     : 
                     null
                 }
-                    
-                    <FlyerList ></FlyerList>
+                    <FlyerList></FlyerList>    
                 </section>
             </div>
         )
@@ -76,7 +74,8 @@ class FlyerListWrapper extends Component {
 const mapStateToProps = (state) => {
     return {
         userRedux: state.userRedux,
-        locationRedux: state.locationRedux
+        locationRedux: state.locationRedux,
+        flyerRedux: state.flyerRedux
     }
 }   
 
