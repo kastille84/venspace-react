@@ -1,0 +1,27 @@
+.FlyerList {
+
+}
+
+.FlyerList li {
+    margin-bottom: 20px;
+}
+
+/* TABLET && LARGE SMARTPHONES */
+@media screen and (min-width: 481px ) and (max-width: 768px) {
+
+}
+/* LAPTOPS && TABLET in Landscape */
+@media screen and (min-width: 769px ) and (max-width: 1024px) {
+    .FlyerList {
+        width: 50%;
+        margin: auto;
+    }
+}
+/* LARGE DESKTOPS */
+@media screen and (min-width: 1025px ) and (max-width: 1600px) {
+    .FlyerList {
+        width: 50%;
+        margin: auto;
+    }
+
+}

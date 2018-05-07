@@ -7,5 +7,28 @@
     border: 1px solid #ccc;
     margin: 20px auto;
     padding: 20px;
-    width: 500px;
+    width: 90%;
+}
+
+/* TABLET && LARGE SMARTPHONES */
+@media screen and (min-width: 481px ) and (max-width: 768px) {
+    .FlyerMaker section {
+        width: 70%;
+        margin: auto;
+    }
+}
+/* LAPTOPS && TABLET in Landscape */
+@media screen and (min-width: 769px ) and (max-width: 1024px) {
+    .FlyerMaker section {
+        width: 50%;
+        margin: auto;
+    }
+}
+/* LARGE DESKTOPS */
+@media screen and (min-width: 1025px ) and (max-width: 1600px) {
+    .FlyerMaker section {
+        width: 40%;
+        margin: auto;
+    }
+
 }

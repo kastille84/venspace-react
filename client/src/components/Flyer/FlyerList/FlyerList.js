@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../../../store/actions/index';
+import classes from './FlyerList.css';
 
 import FlyerListItem from '../FlyerListItem/FlyerListItem';
 
@@ -15,7 +16,7 @@ class FlyerList extends Component {
     render() {
         
         return (
-            <div>
+            <div className={classes.FlyerList}>
                 
                 <ul className="list-group ">
                     {this.props.flyerRedux.flyers.map(flyer => {

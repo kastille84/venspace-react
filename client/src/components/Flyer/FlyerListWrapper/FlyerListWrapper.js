@@ -60,7 +60,9 @@ class FlyerListWrapper extends Component {
                 <section>
                 {(this.props.userRedux.signedIn
                     &&this.props.locationRedux.selectedPlace)?
-                    <button onClick={this.onMakeFlyerRedirect}>Put a Flyer at this Location</button>
+                    <button 
+                        className="btn btn-success mb-2"
+                        onClick={this.onMakeFlyerRedirect}>Put a Flyer at this Location</button>
                     : 
                     null
                 }

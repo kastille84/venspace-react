@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import {Link} from 'react-router-dom';
 import classes from './Home.css';
 import * as actions from '../../../store/actions/index';
 import FlyerListWrapper from '../../Flyer/FlyerListWrapper/FlyerListWrapper';
@@ -23,6 +24,7 @@ class Home extends Component {
         return (
             <div className={classes.Home}>
                 <h3>Manage Your Flyers</h3>
+                <small><Link to='/'>Or Search for Place to Put a Flyer</Link></small>
                 {this.props.flyerRedux.flyerMade? <InfoMessage messageType="info">Your Flyer was Posted!</InfoMessage>: null}
                 {this.props.flyerRedux.deletedFlyer? <InfoMessage messageType="info">Your Flyer was Deleted</InfoMessage>: null}
                 <FlyerListWrapper mode='backend'></FlyerListWrapper>

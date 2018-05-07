@@ -28,6 +28,8 @@
     .Signin {
         width:30%;
     }
-    
+    .Signin input {
+        font-size: 1.3rem;
+    }
 
 }
