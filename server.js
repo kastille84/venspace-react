@@ -16,6 +16,13 @@ app.use(fileUpload());
 const apiRoutes = require('./server/routes/api.js');
 app.use('/api', apiRoutes);
 
+//# 
+app.use(express.static(path.join(__dirname +'/client', 'build')));
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/build/index.html'));
+  });
+//~#
+
 const port = 5000;
 
-app.listen(port, () => `Server running on port ${port}`);
+app.listen(process.env.PORT || port, () => `Express Server is up and running.`);

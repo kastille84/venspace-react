@@ -14,7 +14,8 @@ const User = require('../models/user');
 const Flyer = require('../models/flyer');
 const Place = require('../models/place');
 
-mongoose.connect('mongodb://localhost:27017/venspace');
+//# mongoose.connect('mongodb://localhost:27017/venspace');
+mongoose.connect('mongodb://heroku_x5w15j6f:je15mse68ttvbesn0711bb0pr5@ds229450.mlab.com:29450/heroku_x5w15j6f');
 mongoose.Promise= global.Promise;
 
 const checkInputs = (req, res) => {
