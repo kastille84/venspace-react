@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
-import {NavLink} from 'react-router-dom';
+import {NavLink, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import classes from './Navigation.css'
+import * as actions from '../../store/actions/index';
 
 class Navigation extends Component {
+    logout = (e) => {
+        e.preventDefault();
+        // set logout
+        this.props.onSetLogout();
+        // redirect to Hom
+        this.props.history.push('/signin');
+    }
 
     render() {
         return (
@@ -14,6 +22,7 @@ class Navigation extends Component {
                 {this.props.userRedux.signedIn? 
                 <ul>
                     <li><NavLink to='/manage'>Manage</NavLink></li>
+                    <li><NavLink to='#' onClick={this.props.logout}>Logout</NavLink></li>
                 </ul>
                 :
                 <ul>                    
@@ -31,4 +40,9 @@ const mapStateToProps = (state) => {
         userRedux: state.userRedux
     }
 }
-export default connect(mapStateToProps)(Navigation);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSetLogout: () => dispatch(actions.setSignin(false)) 
+    }
+}
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navigation));
