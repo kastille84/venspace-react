@@ -137,7 +137,7 @@ class Register extends Component {
         // if isValid stays true 
         if (isValid) {
             // make axios call
-            axios.post('/register', data)
+            axios.post('/registers', data)
                 .then(response => {
                     // set Register on Redux
                     this.props.onSetRegistered(true);
