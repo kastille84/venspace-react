@@ -13,24 +13,7 @@ class Home extends Component {
         showMap: true
     }
     componentWillMount() {
-        //axios.get('http://ip-api.com/json')
-        // axios({
-        //     method: 'get',
-        //     url: 'http://ip-api.com/json'})
-        // .then(response => {
-        //     console.log(response);
-            
-        //     //set zip
-        //     let ltlng = {
-        //     lat: response.data.lat,
-        //     lng: response.data.lon
-        //     }
-        //     this.props.onSetIpLocation(ltlng);  
-        //     this.setState({ipWasSet: true})          
-        // })
-        // .catch(err => {
-        //     console.log(err);
-        // })
+        
 
         if ("geolocation" in navigator) {
             /* geolocation is available */
