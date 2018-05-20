@@ -27,6 +27,7 @@ class Home extends Component {
                 <small><Link to='/'>Or Search for Place to Put a Flyer</Link></small>
                 {this.props.flyerRedux.flyerMade? <InfoMessage messageType="info">Your Flyer was Posted!</InfoMessage>: null}
                 {this.props.flyerRedux.deletedFlyer? <InfoMessage messageType="info">Your Flyer was Deleted</InfoMessage>: null}
+                {this.props.flyerRedux.flyers.length === 0? <h5>No Flyers Made Yet.</h5>: null}
                 <FlyerListWrapper mode='backend'></FlyerListWrapper>
             </div>
         )
