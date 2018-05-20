@@ -12,8 +12,7 @@ class Home extends Component {
         ipWasSet: false,
         showMap: true
     }
-    componentWillMount() {
-        
+    componentWillMount() {       
 
         if ("geolocation" in navigator) {
             /* geolocation is available */
@@ -29,8 +28,9 @@ class Home extends Component {
           } else {
             /* geolocation IS NOT available */
           }
-
-        this.props.onSetFlyers([]);
+        setTimeout( () => {
+            this.props.onSetFlyers([]);
+        }, 1000);
     }
     showMapToggle = () => {
         this.setState({showMap: !this.state.showMap});
