@@ -14,20 +14,17 @@ class Home extends Component {
     }
     componentWillMount() {       
 
-        if ("geolocation" in navigator) {
-            /* geolocation is available */
-            navigator.geolocation.getCurrentPosition((position) => {
-                //set zip
-                let ltlng = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-                this.props.onSetIpLocation(ltlng);  
-                this.setState({ipWasSet: true}); 
-              });
-          } else {
-            /* geolocation IS NOT available */
-          }
+        /* geolocation is available */
+        navigator.geolocation.getCurrentPosition((position) => {
+            //set zip
+            let ltlng = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            this.props.onSetIpLocation(ltlng);  
+            this.setState({ipWasSet: true}); 
+            });
+          
         setTimeout( () => {
             this.props.onSetFlyers([]);
         }, 1000);

@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
 });
 
 //#axios.defaults.baseURL="http://localhost:5000/api";
-axios.defaults.baseURL="https://rocky-ridge-91058.herokuapp.com/";
+axios.defaults.baseURL="https://rocky-ridge-91058.herokuapp.com/api";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeEnhancers(
