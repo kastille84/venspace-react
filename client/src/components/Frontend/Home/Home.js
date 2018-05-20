@@ -14,23 +14,38 @@ class Home extends Component {
     }
     componentWillMount() {
         //axios.get('http://ip-api.com/json')
-        axios({
-            method: 'get',
-            url: 'http://ip-api.com/json'})
-        .then(response => {
-            console.log(response);
+        // axios({
+        //     method: 'get',
+        //     url: 'http://ip-api.com/json'})
+        // .then(response => {
+        //     console.log(response);
             
-            //set zip
-            let ltlng = {
-            lat: response.data.lat,
-            lng: response.data.lon
-            }
-            this.props.onSetIpLocation(ltlng);  
-            this.setState({ipWasSet: true})          
-        })
-        .catch(err => {
-            console.log(err);
-        })
+        //     //set zip
+        //     let ltlng = {
+        //     lat: response.data.lat,
+        //     lng: response.data.lon
+        //     }
+        //     this.props.onSetIpLocation(ltlng);  
+        //     this.setState({ipWasSet: true})          
+        // })
+        // .catch(err => {
+        //     console.log(err);
+        // })
+
+        if ("geolocation" in navigator) {
+            /* geolocation is available */
+            navigator.geolocation.getCurrentPosition(function(position) {
+                //set zip
+                let ltlng = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                this.props.onSetIpLocation(ltlng);  
+                this.setState({ipWasSet: true}); 
+              });
+          } else {
+            /* geolocation IS NOT available */
+          }
 
         this.props.onSetFlyers([]);
     }
