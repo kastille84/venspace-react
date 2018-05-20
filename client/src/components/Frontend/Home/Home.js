@@ -16,7 +16,7 @@ class Home extends Component {
 
         if ("geolocation" in navigator) {
             /* geolocation is available */
-            navigator.geolocation.getCurrentPosition(function(position) {
+            navigator.geolocation.getCurrentPosition((position) => {
                 //set zip
                 let ltlng = {
                     lat: position.coords.latitude,
