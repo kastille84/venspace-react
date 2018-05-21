@@ -170,8 +170,7 @@ router.post('/make-flyer', [
         if (req.files.image1) {
             const img1= req.files.image1;
             const img1Name = formatFileName(img1Extra+img1.name);
-            //img1.mv(path.join(__dirname,"..","/..","/public","/assets","/images","/flyers/", img1Name), (err) => {
-            img1.mv(path.join(process.env.PUBLIC_URL,"/assets","/images","/flyers/", img1Name), (err) => {
+            img1.mv(path.join(__dirname,"..","/..","/public","/assets","/images","/flyers/", img1Name), (err) => {
                 if (err) {
                     console.log('pre')
                     return res.status(500).json({message: 'Could Not mv file', 
@@ -184,8 +183,7 @@ router.post('/make-flyer', [
         if (req.files.image2) {
             const img2= req.files.image2;
             const img2Name = formatFileName(img2Extra+img2.name);
-            //img2.mv(path.join(__dirname,"..","/..","/public","/assets","/images","/flyers/", img2Name), (err) => {
-            img2.mv(path.join(process.env.PUBLIC_URL,"/assets","/images","/flyers/", img2Name), (err) => {
+            img2.mv(path.join(__dirname,"..","/..","/public","/assets","/images","/flyers/", img2Name), (err) => {
                 if (err) {
                     console.log('pre2')
                     return res.status(500).json({message: 'Could Not mv file'});
