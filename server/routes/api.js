@@ -173,7 +173,9 @@ router.post('/make-flyer', [
             img1.mv(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img1Name), (err) => {
                 if (err) {
                     console.log('pre')
-                    return res.status(500).json({message: 'Could Not mv file'});
+                    return res.status(500).json({message: 'Could Not mv file', 
+                        dir:__dirname,
+                        dir2flyer: path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", img1Name});
                 } 
             })
         }
