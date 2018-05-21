@@ -42,7 +42,7 @@ class FlyerView extends Component {
                 //const src = %PUBLIC_URL%+'/assets/images/flyers/'+image;
                 return <img 
                     className="img-fluid img-thumbnail rounded" 
-                    src={process.env.PUBLIC_URL + '/assets/images/flyers/'+image} 
+                    src={process.env.PUBLIC_URL + '../build/static/'+image} 
                     alt={image} 
                     key={image}
                     onClick={this.selectImageHandler}
