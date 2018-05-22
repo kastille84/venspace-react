@@ -561,7 +561,8 @@ router.get('/sign-s3', (req, res) => {
     const fileType = req.query['file-type'];
     const s3Params = {
         Bucket: S3_BUCKET,
-        Key: fileName,
+        //Key: fileName,
+        Key: process.env.AWS_ACCESS_KEY_ID,
         Expires: 60,
         ContentType: fileType,
         ACL: 'public-read'
