@@ -79,7 +79,7 @@ class FlyerMaker extends Component {
             method: 'put',
             url: signedRequest,
             data: file,
-            headers: {'Content-Type': 'image'}
+            headers: {'Content-Type': file.type}
         }).then(response => {
                 // store the image urls in state to be sent to the backend
                 if (this.state.imgNum === 1) {                    
