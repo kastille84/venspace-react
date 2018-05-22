@@ -30,22 +30,30 @@ class FlyerMaker extends Component {
     fileChanged = (e) => {        
         if (this.state.imgNum < 2) {
             if (!this.state.image1) {
-                console.log(e.target.files[0]);
-                // validate before adding
+                // console.log(e.target.files[0]);
+                // // validate before adding
                 if (this.validateImage(e.target.value)) {
                     let num = this.state.imgNum;
-                    this.setState({image1: e.target.files[0]});
                     this.setState({imgNum: ++num});
+
+                    //get signed
+                    const file = e.target.files[0];
+                    this.getSignedRequest(file);
                 } else {
                     this.setState({imgErrors: 'Wrong File Type'});
                 }
+                
             } else {
                 // image 2
                 // validate before adding
                 if (this.validateImage(e.target.value)) {
                     let num = this.state.imgNum;
-                    this.setState({image2: e.target.files[0]})
+                    //this.setState({image2: e.target.files[0]})
                     this.setState({imgNum: ++num});
+
+                    //get signed
+                    const file = e.target.files[0];
+                    this.getSignedRequest(file);
                 } else {
                     this.setState({imgErrors: 'Wrong File Type'});
                 }
@@ -54,6 +62,26 @@ class FlyerMaker extends Component {
             this.setState({imgErrors: 'Max of 2 Images'});
         }
         document.getElementById('flyerImg').value = '';
+    }
+    getSignedRequest = (file) => {
+        axios.get(`/sign-s3?file-name=${file.name}&file-type=${file.type}`)
+            .then(response => {
+                this.uploadFile(file, response.data.signedRequest, response.data.url);
+            })
+            .catch(err => {
+
+            });
+    }
+    uploadFile = (file, signedRequest, url) => {
+        axios.put(signedRequest, file)
+            .then(response => {
+                // store the image urls in state to be sent to the backend
+                if (this.state.imgNum === 1) {                    
+                    this.setState({image1: url});
+                } else if (this.state.imgNum === 2) {
+                    this.setState({image2: url})
+                }
+            })
     }
     validateImage = (str) => {
         const indexOfPeriod = str.indexOf('.');
@@ -169,13 +197,9 @@ class FlyerMaker extends Component {
         data.append('formatted_address', this.props.locationRedux.selectedPlace.formatted_address);
         data.append('name', this.props.locationRedux.selectedPlace.name);
         // set up formdata for images
-        if (this.state.image1) {
-            data.append('image1', this.state.image1);
-            
-        }
-        if (this.state.image2) {
-            data.append('image2', this.state.image2);
-        }
+        data.append('image1', this.state.image1);    
+        data.append('image2', this.state.image2);
+        
 
         // if isValid stays true 
         if (isValid) {

@@ -4,6 +4,7 @@ const path = require('path');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 
+
 app.use(cors());
 // Parser
 app.use(express.json());

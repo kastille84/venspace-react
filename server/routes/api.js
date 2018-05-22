@@ -9,6 +9,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const randomString = require('random-string');
 const nodemailer = require('nodemailer');
+// AWS S3
+const aws = require('aws-sdk');
+aws.config.region = 'us-east-1';
+const S3_BUCKET = process.env.S3_BUCKET_NAME;
 
 const User = require('../models/user');
 const Flyer = require('../models/flyer');
@@ -162,37 +166,37 @@ router.post('/make-flyer', [
 ], (req, res) =>{
     checkInputs(req, res);
     console.log(req.body);
-    console.log('files', req.files);
-    const img1Extra = randomString({length: 5});
-    const img2Extra = randomString({length: 5});
+    
+    // const img1Extra = randomString({length: 5});
+    // const img2Extra = randomString({length: 5});
 
-    if (req.files) {
-        if (req.files.image1) {
-            const img1= req.files.image1;
-            const img1Name = formatFileName(img1Extra+img1.name);
-            //img1.mv(path.join(__dirname,"..","/..","/public","/assets","/images","/flyers/", img1Name), (err) => {
-            img1.mv(path.join(__dirname,"..","/../client","/build","/static", img1Name), (err) => {
-                if (err) {
-                    console.log('pre')
-                    return res.status(500).json({message: 'Could Not mv file', 
-                        dir:__dirname,
-                        dir2flyer: path.join(__dirname,"..","/../client","/build","/static", img1Name)
-                    });
-                } 
-            })
-        }
-        if (req.files.image2) {
-            const img2= req.files.image2;
-            const img2Name = formatFileName(img2Extra+img2.name);
-            //img2.mv(path.join(__dirname,"..","/..","/public","/assets","/images","/flyers/", img2Name), (err) => {
-            img2.mv(path.join(__dirname,"..","/../client","/build","/static", img2Name), (err) => {
-                if (err) {
-                    console.log('pre2')
-                    return res.status(500).json({message: 'Could Not mv file'});
-                } 
-            })
-        }
-    }
+    // if (req.files) {
+    //     if (req.files.image1) {
+    //         const img1= req.files.image1;
+    //         const img1Name = formatFileName(img1Extra+img1.name);
+    //         //img1.mv(path.join(__dirname,"..","/..","/public","/assets","/images","/flyers/", img1Name), (err) => {
+    //         img1.mv(path.join(__dirname,"..","/../client","/build","/static", img1Name), (err) => {
+    //             if (err) {
+    //                 console.log('pre')
+    //                 return res.status(500).json({message: 'Could Not mv file', 
+    //                     dir:__dirname,
+    //                     dir2flyer: path.join(__dirname,"..","/../client","/build","/static", img1Name)
+    //                 });
+    //             } 
+    //         })
+    //     }
+    //     if (req.files.image2) {
+    //         const img2= req.files.image2;
+    //         const img2Name = formatFileName(img2Extra+img2.name);
+    //         //img2.mv(path.join(__dirname,"..","/..","/public","/assets","/images","/flyers/", img2Name), (err) => {
+    //         img2.mv(path.join(__dirname,"..","/../client","/build","/static", img2Name), (err) => {
+    //             if (err) {
+    //                 console.log('pre2')
+    //                 return res.status(500).json({message: 'Could Not mv file'});
+    //             } 
+    //         })
+    //     }
+    // }
     // user
     User.findById(req.body.userId).exec()
         .then(user => {
@@ -206,10 +210,12 @@ router.post('/make-flyer', [
                     // create flyer
                             // get images
                             let imagesArr = [];
-                            if (req.files.image1) 
-                                imagesArr.push(formatFileName(img1Extra+req.files.image1.name));
-                            if (req.files.image2) 
-                                imagesArr.push(formatFileName(img2Extra+req.files.image2.name));                                
+                            if (req.body.image1) 
+                                //imagesArr.push(formatFileName(img1Extra+req.files.image1.name));
+                                imagesArr.push(image1);
+                            if (req.body.image2) 
+                                //imagesArr.push(formatFileName(img2Extra+req.files.image2.name));
+                                imagesArr.push(image2);                                
                         const newFlyer = new Flyer({
                             user: user._id,
                             place_id: place._id,
@@ -254,10 +260,12 @@ router.post('/make-flyer', [
                             // create flyer
                                 // get images
                                 let imagesArr = [];
-                                if (req.files.image1) 
-                                    imagesArr.push(formatFileName(img1Extra+req.files.image1.name));
-                                if (req.files.image2) 
-                                    imagesArr.push(formatFileName(img2Extra+req.files.image2.name));                                
+                                if (req.body.image1) 
+                                    //imagesArr.push(formatFileName(img1Extra+req.files.image1.name));
+                                    imagesArr.push(image1);
+                                if (req.body.image2) 
+                                    //imagesArr.push(formatFileName(img2Extra+req.files.image2.name));
+                                    imagesArr.push(image2);                               
                             const newFlyer = new Flyer({
                                 user: user._id,
                                 place_id: result._id,
@@ -545,6 +553,33 @@ router.delete('/delete-flyer/:_id', (req, res) => {
         }
     });
 });
+
+//  S3
+router.get('/sign-s3', (req, res) => {
+    const s3 = new aws.S3();
+    const fileName = req.query['file-name'];
+    const fileType = req.query['file-type'];
+    const s3Params = {
+        Bucket: S3_BUCKET,
+        Key: fileName,
+        Expires: 60,
+        ContentType: fileType,
+        ACL: 'public-read'
+    };
+
+    s3.getSignedUrl('putObject', s3Params, (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.end();
+        }
+
+        return res.status(200).json({
+            signedRequest: data,
+            url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
+        });
+
+    });
+})
 
 
 

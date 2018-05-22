@@ -26,6 +26,7 @@
     "nodemailer": "^4.6.4",
     "nodemon": "^1.14.7",
     "random-string": "^0.2.0",
-    "react-router-dom": "^4.2.2"
+    "react-router-dom": "^4.2.2",
+    "aws-sdk": "2.x"
   }
 }
