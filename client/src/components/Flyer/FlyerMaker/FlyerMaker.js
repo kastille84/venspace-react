@@ -66,6 +66,8 @@ class FlyerMaker extends Component {
     getSignedRequest = (file) => {
         axios.get(`/sign-s3?file-name=${file.name}&file-type=${file.type}`)
             .then(response => {
+                console.log(response.data.signedRequest);
+                console.log(response.data.url);
                 this.uploadFile(file, response.data.signedRequest, response.data.url);
             })
             .catch(err => {
@@ -82,6 +84,7 @@ class FlyerMaker extends Component {
                     this.setState({image2: url})
                 }
             })
+            .catch(err => console.log(err));
     }
     validateImage = (str) => {
         const indexOfPeriod = str.indexOf('.');
