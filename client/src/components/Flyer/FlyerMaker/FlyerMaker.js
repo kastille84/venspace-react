@@ -78,7 +78,8 @@ class FlyerMaker extends Component {
         axios({
             method: 'put',
             url: signedRequest,
-            data: file
+            data: file,
+            headers: {'Content-Type': 'image'}
         }).then(response => {
                 // store the image urls in state to be sent to the backend
                 if (this.state.imgNum === 1) {                    
