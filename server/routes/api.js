@@ -212,10 +212,10 @@ router.post('/make-flyer', [
                             let imagesArr = [];
                             if (req.body.image1) 
                                 //imagesArr.push(formatFileName(img1Extra+req.files.image1.name));
-                                imagesArr.push(image1);
+                                imagesArr.push(req.body.image1);
                             if (req.body.image2) 
                                 //imagesArr.push(formatFileName(img2Extra+req.files.image2.name));
-                                imagesArr.push(image2);   
+                                imagesArr.push(req.body.image2);   
                         console.log('3.1 ', imagesArr);                             
                         const newFlyer = new Flyer({
                             user: user._id,
