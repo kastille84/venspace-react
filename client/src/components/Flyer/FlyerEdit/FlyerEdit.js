@@ -273,7 +273,7 @@ class FlyerEdit extends Component {
                                     && !this.state.originalImagesDeleted)? (
                                     <span><img 
                                         className="img-fluid img-thumbnail rounded" 
-                                        src={process.env.PUBLIC_URL + '/assets/images/flyers/'+this.state.image1} 
+                                        src={this.state.image1} 
                                         alt={this.state.image1} />
                                         <br />
                                         <button className="btn btn-danger" onClick={() => this.imageDelete(this.state.image1)}>X</button>
@@ -284,7 +284,7 @@ class FlyerEdit extends Component {
                                     && !this.state.originalImagesDeleted)? (
                                     <span><img 
                                         className="img-fluid img-thumbnail rounded" 
-                                        src={process.env.PUBLIC_URL + '/assets/images/flyers/'+this.state.image2} 
+                                        src={this.state.image2} 
                                         alt={this.state.image2} />
                                         <br />
                                         <button className="btn btn-danger" onClick={() => this.imageDelete(this.state.image2)}>X</button>
