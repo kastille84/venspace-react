@@ -75,6 +75,7 @@ class FlyerMaker extends Component {
             });
     }
     uploadFile = (file, signedRequest, url) => {
+        console.log(file.type);
         axios({
             method: 'put',
             url: signedRequest,

@@ -206,7 +206,7 @@ router.post('/make-flyer', [
                 .then(place => {
                     console.log('2');
                     if (place) {
-                        console.log('3');
+                        console.log('3 ', place);
                     // create flyer
                             // get images
                             let imagesArr = [];
@@ -215,7 +215,8 @@ router.post('/make-flyer', [
                                 imagesArr.push(image1);
                             if (req.body.image2) 
                                 //imagesArr.push(formatFileName(img2Extra+req.files.image2.name));
-                                imagesArr.push(image2);                                
+                                imagesArr.push(image2);   
+                        console.log('3.1 ', imagesArr);                             
                         const newFlyer = new Flyer({
                             user: user._id,
                             place_id: place._id,
@@ -227,6 +228,7 @@ router.post('/make-flyer', [
                             },
                             images: imagesArr
                         });
+                        console.log('3.2 ', newFlyer);
                         newFlyer.save((err, resultFlyer) => {
                             console.log('4');
                             if (err){
