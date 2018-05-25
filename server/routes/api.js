@@ -375,7 +375,7 @@ router.patch('/edit-flyer', [
                         Delete: {
                             Objects: [
                                 {
-                                    Key: flyer.images[0].slice(40, flyer.images[1].length)
+                                    Key: flyer.images[1].slice(40, flyer.images[1].length)
                                 }
                             ]
                         }
