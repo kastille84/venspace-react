@@ -144,9 +144,9 @@ class FlyerEdit extends Component {
             headers: {'Content-Type': file.type}
         }).then(response => {
                 // store the image urls in state to be sent to the backend
-                if (this.state.imgNum === 1 && this.state.image1 === null) {                    
+                if (this.state.image1 === null) {                    
                     this.setState({image1: url});
-                } else if (this.state.imgNum === 1 && this.state.image2 === null)
+                } else if (this.state.image2 === null)
                     this.setState({image2: url})
                 else if (this.state.imgNum === 0) {
                     this.setState({image1: url})
