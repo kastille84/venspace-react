@@ -97,8 +97,11 @@ class FlyerEdit extends Component {
                 // validate before adding
                 if (this.validateImage(e.target.value)) {
                     let num = this.state.imgNum;
-                    this.setState({image1: e.target.files[0]});
                     this.setState({imgNum: ++num});
+
+                    //get signed
+                    const file = e.target.files[0];
+                    this.getSignedRequest(file);
                 } else {
                     this.setState({imgErrors: 'Wrong File Type'});
                 }
@@ -107,8 +110,11 @@ class FlyerEdit extends Component {
                 // validate before adding
                 if (this.validateImage(e.target.value)) {
                     let num = this.state.imgNum;
-                    this.setState({image2: e.target.files[0]})
                     this.setState({imgNum: ++num});
+
+                    //get signed
+                    const file = e.target.files[0];
+                    this.getSignedRequest(file);
                 } else {
                     this.setState({imgErrors: 'Wrong File Type'});
                 }
@@ -117,6 +123,34 @@ class FlyerEdit extends Component {
             this.setState({imgErrors: 'Max of 2 Images'});
         }
         document.getElementById('flyerImg').value = '';
+    }
+    getSignedRequest = (file) => {
+        axios.get(`/sign-s3?file-name=${file.name}&file-type=${file.type}`)
+            .then(response => {
+                console.log(response.data.signedRequest);
+                console.log(response.data.url);
+                this.uploadFile(file, response.data.signedRequest, response.data.url);
+            })
+            .catch(err => {
+
+            });
+    }
+    uploadFile = (file, signedRequest, url) => {
+        console.log(file.type);
+        axios({
+            method: 'put',
+            url: signedRequest,
+            data: file,
+            headers: {'Content-Type': file.type}
+        }).then(response => {
+                // store the image urls in state to be sent to the backend
+                if (this.state.imgNum === 1) {                    
+                    this.setState({image1: url});
+                } else if (this.state.imgNum === 2) {
+                    this.setState({image2: url})
+                }
+            })
+            .catch(err => console.log(err));
     }
     validateImage = (str) => {
         const indexOfPeriod = str.indexOf('.');
