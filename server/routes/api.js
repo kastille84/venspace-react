@@ -350,9 +350,11 @@ router.patch('/edit-flyer', [
                     let params = {
                         Bucket: S3_BUCKET,
                         Delete: {
-                            Objects: {
-                                Key: flyer.images[0].slice(40, flyer.images[0].length)
-                            }
+                            Objects: [
+                                {
+                                    Key: flyer.images[0].slice(40, flyer.images[0].length)
+                                }
+                            ]
                         }
                     };
                     console.log('2.1.1')
@@ -371,9 +373,11 @@ router.patch('/edit-flyer', [
                     let params2 = {
                         Bucket: S3_BUCKET,
                         Delete: {
-                            Objects: {
-                                Key: flyer.images[0].slice(40, flyer.images[1].length)
-                            }
+                            Objects: [
+                                {
+                                    Key: flyer.images[0].slice(40, flyer.images[1].length)
+                                }
+                            ]
                         }
                     }
                     s3.deleteObjects(params2, (err, data) => {
@@ -397,9 +401,11 @@ router.patch('/edit-flyer', [
                     let params = {
                         Bucket: S3_BUCKET,
                         Delete: {
-                            Objects: {
-                                Key: Image2Delete
-                            }
+                            Objects: [
+                                {
+                                    Key: Image2Delete
+                                }
+                            ]
                         }
                     }
                     s3.deleteObjects(params, (err, data) => {
