@@ -337,7 +337,7 @@ router.patch('/edit-flyer', [
 
 
             // have image1, image2 
-            if (req.body['image1'] & req.body['image2']){
+            if (req.body['image1'] && req.body['image2']){
                 console.log('2');
                 // get their URLs to put in imagesArr
                 imagesArr.push(req.body['image1']);
