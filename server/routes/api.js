@@ -330,7 +330,7 @@ router.patch('/edit-flyer', [
         
     Flyer.findById(req.body.flyerId).exec()
         .then(flyer => {
-            
+            console.log('1', flyer);
             let imagesArr = [];
 
         /** AWS Integration */           
@@ -338,13 +338,14 @@ router.patch('/edit-flyer', [
 
             // have image1, image2 
             if (req.body['image1'] & req.body['image2']){
+                console.log('2');
                 // get their URLs to put in imagesArr
                 imagesArr.push(req.body['image1']);
                 imagesArr.push(req.body['image2']);
 
                 const s3 = new aws.S3();
                 if (req.body['image1'] !== flyer.images[0]) {
-                    
+                    console.log('2.1')
                     // delete on aws
                     let params = {
                         Bucket: S3_BUCKET,
@@ -354,17 +355,19 @@ router.patch('/edit-flyer', [
                             }
                         }
                     };
-                    
+                    console.log('2.1.1')
                     s3.deleteObjects(params, (err, data)=> {
                         if (err){
+                            console.log('2.1.2')
                             return res.status(500).json({message: 'failed to delete image1'});
                         }
-                       
+                       console.log('2.1.3')
                     })
                 }  
                 
                  // check image 2
                 if (req.body['image2'] !== flyer.images[1]) {
+                    console.log('2.2')
                     let params2 = {
                         Bucket: S3_BUCKET,
                         Delete: {
@@ -386,6 +389,7 @@ router.patch('/edit-flyer', [
             } 
             // have image1
             else if (req.body['image1']) {
+                console.log('3');
                 imagesArr.push(req.body['image1']);
                 if (flyer.images.indexOf(req.body['image1']) !== -1) {
                     let index = flyer.images.indexOf(req.body['image1']);
