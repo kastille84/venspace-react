@@ -492,6 +492,42 @@ router.patch('/edit-flyer', [
                 }
 
                 saveFlyer(req, res, imagesArr, flyer);
+            } 
+            // NO IMAGES
+            else if (!req.body['image1'] && !req.body['image2']) {
+                let Objects2Delete = [];
+                if (flyer.images.length > 0) {
+                    for ( let img of flyer.images) {
+                        // you're getting deleted
+                        Objects2Delete.push({
+                            Key: img.slice(40, img.length)
+                        })
+                        
+                    }
+                    console.log('3.1', Objects2Delete)
+                    if (Objects2Delete.length > 0) {
+                        let params3 = {
+                            Bucket: S3_BUCKET,
+                            Delete: {
+                                Objects: Objects2Delete
+                            }
+                        }
+                        console.log('3.2', params3.Delete.Objects);
+                        try {
+                            s3.deleteObjects(params3, (err, data) => {
+                                console.log('3.4')
+                                if (err){
+                                    console.log('3.5', err)
+                                    return res.status(500).json({message: 'Failed to delete image1'});
+                                }
+                                console.log('3.6', data)
+                            })
+                        } catch ( error ) {
+                            console.log('error', error);
+                        }
+                    }
+                }
+                saveFlyer(req, res, imagesArr, flyer)
             }
 
 
