@@ -395,22 +395,23 @@ router.patch('/edit-flyer', [
             else if (req.body['image1'] && !req.body['image2']) {
                 console.log('3');
                 imagesArr.push(req.body['image1']);
-                if (flyer.images.indexOf(req.body['image1']) !== -1) {
+                // check if req.body.image1 is diff from DB's image1
+                if (flyer.images.indexOf(req.body['image1']) === -1) {
                     console.log('3.1')
-                    let index = flyer.images.indexOf(req.body['image1']);
-                    let Image2Delete = flyer.images[index].slice(40, flyer.images[index].length);
+                    // let index = flyer.images.indexOf(req.body['image1']);
+                    // let Image2Delete = flyer.images[index].slice(40, flyer.images[index].length);
                     console.log('3.2')
                     let params3 = {
                         Bucket: S3_BUCKET,
                         Delete: {
                             Objects: [
                                 {
-                                    Key: Image2Delete
+                                    Key: flyer.images[0].slice(40, flyer.images[0].length)
                                 }
                             ]
                         }
                     }
-                    console.log('3.3', Image2Delete);
+                    console.log('3.3');
                     s3.deleteObjects(params3, (err, data) => {
                         console.log('3.4')
                         if (err){
@@ -427,15 +428,15 @@ router.patch('/edit-flyer', [
             else if (req.body['image2'] && !req.body['image1']) {
                 console.log('4');
                 imagesArr.push(req.body['image2']);
-                if (flyer.images.indexOf(req.body['image2']) !== -1) {
-                    let index = flyer.images.indexOf(req.body['image2']);
-                    let Image2Delete = flyer.images[index].slice(40, flyer.images[index].length);
+                if (flyer.images.indexOf(req.body['image2']) === -1) {
+                    // let index = flyer.images.indexOf(req.body['image2']);
+                    // let Image2Delete = flyer.images[index].slice(40, flyer.images[index].length);
                     let params4 = {
                         Bucket: S3_BUCKET,
                         Delete: {
                             Objects: [
                                 {
-                                    Key: Image2Delete
+                                    Key: flyer.images[1].slice(40, flyer.images[1].length)
                                 }
                             ]
                         }
