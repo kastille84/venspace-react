@@ -405,6 +405,7 @@ router.patch('/edit-flyer', [
                             })
                         }
                     }
+                    console.log('3.1', Objects2Delete)
                     if (Objects2Delete.length > 0) {
                         let params3 = {
                             Bucket: S3_BUCKET,
@@ -412,7 +413,7 @@ router.patch('/edit-flyer', [
                                 Objects: Objects2Delete
                             }
                         }
-                        console.log('3.3');
+                        console.log('3.2', params3.Delete.Objects);
                         s3.deleteObjects(params3, (err, data) => {
                             console.log('3.4')
                             if (err){
