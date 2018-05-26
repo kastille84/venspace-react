@@ -397,7 +397,7 @@ router.patch('/edit-flyer', [
                 imagesArr.push(req.body['image1']);
                 let Objects2Delete = [];
                 if (flyer.images.length > 0) {
-                    for ( img of flyer.images) {
+                    for ( let img of flyer.images) {
                         if (img !== req.body['image1']) {
                             // you're getting deleted
                             Objects2Delete.push({
