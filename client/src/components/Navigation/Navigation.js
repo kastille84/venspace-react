@@ -9,6 +9,7 @@ class Navigation extends Component {
         e.preventDefault();
         // set logout
         this.props.onSetLogout();
+        this.props.onResetUser();
         // redirect to Hom
         this.props.history.push('/signin');
     }
@@ -42,7 +43,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSetLogout: () => dispatch(actions.setSignin(false)) 
+        onSetLogout: () => dispatch(actions.setSignin(false)),
+        onResetUser: () => dispatch(actions.setUser(null)) 
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navigation));
