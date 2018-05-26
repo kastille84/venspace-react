@@ -334,7 +334,7 @@ router.patch('/edit-flyer', [
             let imagesArr = [];
 
         /** AWS Integration */           
-
+            const s3 = new aws.S3();
 
             // have image1, image2 
             if (req.body['image1'] && req.body['image2']){
@@ -343,7 +343,6 @@ router.patch('/edit-flyer', [
                 imagesArr.push(req.body['image1']);
                 imagesArr.push(req.body['image2']);
 
-                const s3 = new aws.S3();
                 if (req.body['image1'] !== flyer.images[0]) {
                     console.log('2.1')
                     // delete on aws
