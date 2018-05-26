@@ -410,7 +410,7 @@ router.patch('/edit-flyer', [
                     }
                     s3.deleteObjects(params, (err, data) => {
                         if (err){
-                            return res.status(500).json({message: 'failed to delete image1'});
+                            return res.status(500).json({message: 'Failed to delete image1'});
                         }
 
                     })
