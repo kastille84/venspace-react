@@ -400,12 +400,12 @@ router.patch('/edit-flyer', [
                     for ( img of flyer.images) {
                         if (img !== req.body['image1']) {
                             // you're getting deleted
-                            Object2Delete.push({
+                            Objects2Delete.push({
                                 Key: img.slice(40, img.length)
                             })
                         }
                     }
-                    if (Object2Delete.length > 0) {
+                    if (Objects2Delete.length > 0) {
                         let params3 = {
                             Bucket: S3_BUCKET,
                             Delete: {
