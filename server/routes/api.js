@@ -343,48 +343,70 @@ router.patch('/edit-flyer', [
                 imagesArr.push(req.body['image1']);
                 imagesArr.push(req.body['image2']);
 
-                if (req.body['image1'] !== flyer.images[0]) {
-                    console.log('2.1')
-                    // delete on aws
-                    let params = {
-                        Bucket: S3_BUCKET,
-                        Delete: {
-                            Objects: [
-                                {
-                                    Key: flyer.images[0].slice(40, flyer.images[0].length)
-                                }
-                            ]
+                if (flyer.images.length === 2) {
+                    if (req.body['image1'] !== flyer.images[0]) {
+                        console.log('2.1')
+                        // delete on aws
+                        let params = {
+                            Bucket: S3_BUCKET,
+                            Delete: {
+                                Objects: [
+                                    {
+                                        Key: flyer.images[0].slice(40, flyer.images[0].length)
+                                    }
+                                ]
+                            }
+                        };
+                        console.log('2.1.1')
+                        s3.deleteObjects(params, (err, data)=> {
+                            if (err){
+                                console.log('2.1.2')
+                                return res.status(500).json({message: 'failed to delete image1', err: err});
+                            }
+                           console.log('2.1.3')
+                        })
+                    }  
+                    
+                     // check image 2
+                    if (req.body['image2'] !== flyer.images[1]) {
+                        console.log('2.2')
+                        let params2 = {
+                            Bucket: S3_BUCKET,
+                            Delete: {
+                                Objects: [
+                                    {
+                                        Key: flyer.images[1].slice(40, flyer.images[1].length)
+                                    }
+                                ]
+                            }
                         }
-                    };
-                    console.log('2.1.1')
-                    s3.deleteObjects(params, (err, data)=> {
-                        if (err){
-                            console.log('2.1.2')
-                            return res.status(500).json({message: 'failed to delete image1', err: err});
-                        }
-                       console.log('2.1.3')
-                    })
-                }  
-                
-                 // check image 2
-                if (req.body['image2'] !== flyer.images[1]) {
-                    console.log('2.2')
-                    let params2 = {
-                        Bucket: S3_BUCKET,
-                        Delete: {
-                            Objects: [
-                                {
-                                    Key: flyer.images[1].slice(40, flyer.images[1].length)
-                                }
-                            ]
-                        }
+                        s3.deleteObjects(params2, (err, data) => {
+                            if (err){
+                                return res.status(500).json({message: 'failed to delete image1'});
+                            }
+    
+                        })
                     }
-                    s3.deleteObjects(params2, (err, data) => {
-                        if (err){
-                            return res.status(500).json({message: 'failed to delete image1'});
-                        }
 
-                    })
+                } else if (flyer.images.length === 1) {
+                    if (req.body['image1'] !== flyer.images[0] 
+                            && req.body['image2'] !== flyer.images[0]) {
+                                let params = {
+                                    Bucket: S3_BUCKET,
+                                    Delete: {
+                                        Objects: [
+                                            {
+                                                Key: flyer.images[0].slice(40, flyer.images[0].length)
+                                            }
+                                        ]
+                                    }
+                                };
+                                s3.deleteObjects(params, (err, data)=> {
+                                    if (err){
+                                        return res.status(500).json({message: 'failed to delete image1', err: err});
+                                    }
+                                })
+                    }
                 }
                 
                 saveFlyer(req, res, imagesArr, flyer)
