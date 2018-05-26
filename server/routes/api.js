@@ -435,25 +435,38 @@ router.patch('/edit-flyer', [
             else if (req.body['image2'] && !req.body['image1']) {
                 console.log('4');
                 imagesArr.push(req.body['image2']);
-                if (flyer.images.indexOf(req.body['image2']) === -1) {
-                    // let index = flyer.images.indexOf(req.body['image2']);
-                    // let Image2Delete = flyer.images[index].slice(40, flyer.images[index].length);
-                    let params4 = {
-                        Bucket: S3_BUCKET,
-                        Delete: {
-                            Objects: [
-                                {
-                                    Key: flyer.images[1].slice(40, flyer.images[1].length)
-                                }
-                            ]
+                let Objects2Delete = [];
+                if (flyer.images.length > 0) {
+                    for ( let img of flyer.images) {
+                        if (img !== req.body['image2']) {
+                            // you're getting deleted
+                            Objects2Delete.push({
+                                Key: img.slice(40, img.length)
+                            })
                         }
                     }
-                    s3.deleteObjects(params4, (err, data) => {
-                        if (err){
-                            return res.status(500).json({message: 'Failed to delete image1'});
+                    console.log('3.1', Objects2Delete)
+                    if (Objects2Delete.length > 0) {
+                        let params3 = {
+                            Bucket: S3_BUCKET,
+                            Delete: {
+                                Objects: Objects2Delete
+                            }
                         }
-
-                    })
+                        console.log('3.2', params3.Delete.Objects);
+                        try {
+                            s3.deleteObjects(params3, (err, data) => {
+                                console.log('3.4')
+                                if (err){
+                                    console.log('3.5', err)
+                                    return res.status(500).json({message: 'Failed to delete image1'});
+                                }
+                                console.log('3.6', data)
+                            })
+                        } catch ( error ) {
+                            console.log('error', error);
+                        }
+                    }
                 }
 
                 saveFlyer(req, res, imagesArr, flyer);
