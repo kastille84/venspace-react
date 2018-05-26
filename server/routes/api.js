@@ -705,23 +705,53 @@ router.delete('/delete-flyer/:_id', (req, res) => {
             return res.status(500).json({message: 'Could Not Remove'});
         }
         if (deletedFlyer) {
-            // Delete any stored images 
-            if (deletedFlyer.images.length === 2) {
-                // unlink both files
-                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", deletedFlyer.images[0]), (err) => {
-                    if(err) return res.status(500).json({message: 'Could not delete image'});
+            // Delete any stored images in AWS
+            let Objects2Delete = [];
+            if (deletedFlyer.images.length > 0) {
+                for ( let img of deletedFlyer.images) {
+                    // you're getting deleted
+                    Objects2Delete.push({
+                        Key: img.slice(40, img.length)
+                    })
                     
-                    fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1]), (err) => {
-                        if (err) return res.status(500).json({message: 'Could not delete image'});
-                        
-                    });
-                });
-            } else if (deletedFlyer.images.length === 1) {
-                // unlink iamge1 files
-                fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", deletedFlyer.images[0]), (err) => {
-                    if(err) return res.status(500).json({message: 'Could not delete image'});
-                });
+                }
+                if (Objects2Delete.length > 0) {
+                    let params3 = {
+                        Bucket: S3_BUCKET,
+                        Delete: {
+                            Objects: Objects2Delete
+                        }
+                    }
+                    try {
+                        s3.deleteObjects(params3, (err, data) => {
+                            console.log('3.4')
+                            if (err){
+                                console.log('3.5', err)
+                                return res.status(500).json({message: 'Failed to delete image1'});
+                            }
+                            console.log('3.6', data)
+                        })
+                    } catch ( error ) {
+                        console.log('error', error);
+                    }
+                }
             }
+            // if (deletedFlyer.images.length === 2) {
+            //     // unlink both files
+            //     fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", deletedFlyer.images[0]), (err) => {
+            //         if(err) return res.status(500).json({message: 'Could not delete image'});
+                    
+            //         fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", flyer.images[1]), (err) => {
+            //             if (err) return res.status(500).json({message: 'Could not delete image'});
+                        
+            //         });
+            //     });
+            // } else if (deletedFlyer.images.length === 1) {
+            //     // unlink iamge1 files
+            //     fs.unlink(path.join(__dirname,"..","/..","/client","/public","/assets","/images","/flyers/", deletedFlyer.images[0]), (err) => {
+            //         if(err) return res.status(500).json({message: 'Could not delete image'});
+            //     });
+            // }
 
             // delete from user
             User.findById(deletedFlyer.user, (err, user) => {

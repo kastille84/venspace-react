@@ -22,7 +22,7 @@ class Navigation extends Component {
                 {this.props.userRedux.signedIn? 
                 <ul>
                     <li><NavLink to='/manage'>Manage</NavLink></li>
-                    <li><NavLink to='#' onClick={this.props.logout}>Logout</NavLink></li>
+                    <li><NavLink to='#' onClick={this.logout}>Logout</NavLink></li>
                 </ul>
                 :
                 <ul>                    

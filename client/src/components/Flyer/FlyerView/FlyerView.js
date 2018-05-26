@@ -131,6 +131,7 @@ class FlyerView extends Component {
                 <div className={classes.FlyerView}>
                     <h2>{this.props.flyerRedux.selectedFlyer.heading}</h2>
                     <small>posted at {this.props.flyerRedux.selectedFlyer.place_id.name}</small>
+                    <hr />
                     <section className={classes.pictures}>
                         {this.getPictures()}                    
                     </section>
