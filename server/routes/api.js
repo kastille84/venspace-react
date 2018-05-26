@@ -422,7 +422,7 @@ router.patch('/edit-flyer', [
                     })
                 }
 
-                saveFlyer(req, res. imagesArr, flyer);
+                saveFlyer(req, res, imagesArr, flyer);
             }
             // have image2 but not image1
             else if (req.body['image2'] && !req.body['image1']) {
@@ -449,7 +449,7 @@ router.patch('/edit-flyer', [
                     })
                 }
 
-                saveFlyer(req, res. imagesArr, flyer);
+                saveFlyer(req, res, imagesArr, flyer);
             }
 
 
