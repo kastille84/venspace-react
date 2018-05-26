@@ -31,7 +31,7 @@ class Home extends Component {
     }
     componentDidMount() {
         this.props.onResetSelectedPlace();
-        this.props.onSetValidPlace(null);
+        //this.props.onSetValidPlace(null);
     }
     showMapToggle = () => {
         this.setState({showMap: !this.state.showMap});
@@ -75,7 +75,7 @@ const mapDispatchToProps = (dispatch) => {
       onSetIpLocation: (ltlng) => dispatch(actions.setIpLocation(ltlng)),
       onSetFlyers: (flyers) => dispatch(actions.setFlyers(flyers)),
       onResetSelectedPlace: () => dispatch(actions.setSelectedPlace(null)),
-      onSetValidPlace: (bool) => dispatch(actions.setValidPlace(bool))
+      //onSetValidPlace: (bool) => dispatch(actions.setValidPlace(bool))
     }
 }
 
