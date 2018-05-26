@@ -410,7 +410,7 @@ router.patch('/edit-flyer', [
                             ]
                         }
                     }
-                    console.log('3.3', params3);
+                    console.log('3.3', Image2Delete);
                     s3.deleteObjects(params3, (err, data) => {
                         console.log('3.4')
                         if (err){
