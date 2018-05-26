@@ -51,7 +51,7 @@ class Home extends Component {
                     {this.state.ipWasSet && this.state.showMap? <MapWithASearchBox /> : null}
                 </div>
                 <div className={classes.MapContainer}>
-                    <FlyerListWrapper mode='frontend'></FlyerListWrapper>
+                    {this.props.locationRedux.selectedPlace ? <FlyerListWrapper mode='frontend'></FlyerListWrapper> : null}
                 </div>
                 {(this.props.flyerRedux.flyers.length === 0 )?
                     <p>Please Search A Business Location for Flyers.<br/> Be as specific as possible by using name of business and optionally the address</p>
