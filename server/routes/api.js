@@ -391,12 +391,39 @@ router.patch('/edit-flyer', [
                 saveFlyer(req, res, imagesArr, flyer)
                 
             } 
-            // have image1
-            else if (req.body['image1']) {
+            // have image1 but not image2
+            else if (req.body['image1'] && !req.body['image2']) {
                 console.log('3');
                 imagesArr.push(req.body['image1']);
                 if (flyer.images.indexOf(req.body['image1']) !== -1) {
                     let index = flyer.images.indexOf(req.body['image1']);
+                    let Image2Delete = flyer.images[index].slice(40, flyer.images[index].length);
+                    let params = {
+                        Bucket: S3_BUCKET,
+                        Delete: {
+                            Objects: [
+                                {
+                                    Key: Image2Delete
+                                }
+                            ]
+                        }
+                    }
+                    s3.deleteObjects(params, (err, data) => {
+                        if (err){
+                            return res.status(500).json({message: 'Failed to delete image1'});
+                        }
+
+                    })
+                }
+
+                saveFlyer(req, res. imagesArr, flyer);
+            }
+            // have image1 but not image2
+            else if (req.body['image2'] && !req.body['image1']) {
+                console.log('3');
+                imagesArr.push(req.body['image2']);
+                if (flyer.images.indexOf(req.body['image2']) !== -1) {
+                    let index = flyer.images.indexOf(req.body['image2']);
                     let Image2Delete = flyer.images[index].slice(40, flyer.images[index].length);
                     let params = {
                         Bucket: S3_BUCKET,
