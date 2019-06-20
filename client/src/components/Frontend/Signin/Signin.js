@@ -145,6 +145,7 @@ class Signin extends Component {
                     <form onSubmit={this.handleSubmit}>
 						<div className="form-group">
                             <label>Email</label>
+                            <br/><small>use: kastille84@gmail.com</small>
                             <input 
                                 type='text' 
                                 className="form-control"
@@ -155,6 +156,7 @@ class Signin extends Component {
                         </div>
 						<div className="form-group">
                             <label>Password</label>
+                            <br/><small>use: test4400</small>
                             <input 
                                 type='password' 
                                 className="form-control"

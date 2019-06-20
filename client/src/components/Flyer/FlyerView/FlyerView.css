@@ -61,7 +61,7 @@
     }
     
     .description {
-        margin-top: 40px auto;
+        margin: 40px auto;
         width: 60%;
         text-align: center;
         white-space: pre-wrap;
@@ -95,7 +95,7 @@
     }
     
     .description {
-        margin-top: 40px auto;
+        margin: 40px auto;
         width: 60%;
         text-align: center;
         white-space: pre-wrap;
@@ -105,7 +105,7 @@
 /* LARGE DESKTOPS */
 @media screen and (min-width: 1025px ) and (max-width: 1600px) {
     .description {
-        margin-top: 40px auto;
+        margin: 40px auto;
         width: 60%;
         text-align: center;
         white-space: pre-wrap;
