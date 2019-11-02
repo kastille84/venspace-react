@@ -22,7 +22,7 @@
     "express-fileupload": "^0.4.0",
     "express-validator": "^5.1.2",
     "jsonwebtoken": "^8.2.1",
-    "mongoose": "^5.0.12",
+    "mongoose": "^5.7.5",
     "nodemailer": "^4.6.4",
     "nodemon": "^1.14.7",
     "random-string": "^0.2.0",
